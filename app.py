@@ -39,7 +39,7 @@ dict_ddz = dict(方块A='0x01,', 方块2='0x02,', 方块3='0x03,', 方块4='0x04
                 黑桃10='0x3A,', 黑桃J='0x3B,', 黑桃Q='0x3C,', 黑桃K='0x3D,', 小王='0x4E,', 大王='0x4F,')
 # 取出所有的key
 name_list = dict_maj.keys()
-player = []
+player = ''
 
 
 def con_mysql(sql):
@@ -71,14 +71,17 @@ def homepage():
 
 @app.route('/maj_extends.html', methods=['GET', 'POST'])
 def maj_extends():
+    global player
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
+            if len(player) > 1000:
+                player = ''
             card_list = ''.join(dict_maj[i] for i in request.form['Card_Name'][:-1].split(',') if i != '')
             user_id = str(request.form['User_Id_Data'])
             server_url = str(request.form['Server_Url_Data'])
             get_url = server_url + '?user_id=' + user_id + '&maj=' + card_list[:-1]
-            a = '游戏ID->'+user_id+'：'+ request.form['Card_Name']
-            player.append(a)
+            a = '游戏ID->'+user_id+'：' + request.form['Card_Name'] + '\n'
+            player += a
             print(get_url)
             statis_card_number = {}
             card_max_number = 0
@@ -97,7 +100,7 @@ def maj_extends():
                 try:
                     res = requests.get(get_url)
                     print(res.text)
-                    return render_template('maj_extends.html', Tips=res.text, User_id=user_id, Player=str(player)[1:-1])
+                    return render_template('maj_extends.html', Tips=res.text, User_id=user_id, Player=player)
                 except:
                     pass
         if request.form['Submit_Button'] == '换三张':
@@ -129,12 +132,12 @@ def maj_extends():
             except:
                 return render_template('maj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
         if request.form['Submit_Button'] == '拿牌':
-            cardpool_url = 'http://10.0.0.32:8801/user/mjAppointTakeCard'
+            cardpool_url = 'http://10.0.0.32:8802/user/mjAppointTakeCard'
             gameID = request.form['User_Id_Data']
             card_key = request.form['Next_Card_Data'][:-1]
             print(card_key)
             if (card_key in name_list) is False:
-                return render_template('maj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
+                return render_template('maj_extends.html', Tips='请检查配置麻将牌是否正确', User_id=gameID)
             elif len(gameID) == 0:
                 return render_template('maj_extends.html', Tips='请输入正确的游戏ID', User_id=gameID)
             else:
