@@ -19,6 +19,7 @@ import os.path
 import time
 import xlrd
 import os
+import svn.remote
 
 
 # 实例化，可视为固定格式
@@ -312,32 +313,36 @@ def doudz_TestCoverage():
 @app.route('/checkconfig.html', methods=['GET', 'POST'])
 def checkconfig():
     if request.method == 'POST':
-        checkresult = ''
-        filelist = ['add_times_info_doudizhu.xlsx', 'game_config.xlsx', 'handcard_info.xlsx', 'person_aicontrol_info.xlsx',
-                    'platform_group_control.xlsx', 'platform_person_control.xlsx', 'takecard_info.xlsx', 'type_score_xuezhan.xlsx', 'xuezhandaodi.xlsx']
-        for filename in filelist:
-            fileurl = r'E:\designer\配置表\{}'.format(filename)
-            sheet = openxl(fileurl)
-            xl_rows = sheet.nrows
-            xl_rows -= 4
-            try:
-                for row in range(xl_rows):
-                    sql = 'select * from {} where id={}'.format(filename[:-5], row+1)
-                    sql_result = con_mysql(sql)
-                    sql_result = list(sql_result)
-                    xl_result = sheet.row_values(row+4)
-                    for i in range(len(xl_result)):
-                        if type(xl_result[i]) is float:
-                            xl_result[i] = round(xl_result[i])
-                        if sql_result[i] != xl_result[i] and type(sql_result[i]) == type(xl_result[i]):
-                            result = '表名：{},第{}行,第{}列->ERROR! 配置表为：{} 数据库为：{} 表地址：{}\n'.format(filename, row+1, i+1, xl_result[i], sql_result[i], fileurl)
-                            # result = result.ljust(150, ' ')
-                            checkresult += result
-            except:
-                pass
-        if len(checkresult) == 0:
-            return render_template('checkconfig.html', CheckResult='恭喜！本次数据表检查没有发现差异！')
-        return render_template('checkconfig.html', CheckResult=checkresult)
+        if request.form['checkconfig'] == '更新配置表':
+            r = svn.remote.RemoteClient(r'https://10.0.0.22/svn/designer/配置表')
+            r.checkout('/home')
+        if request.form['checkconfig'] == '开始检查':
+            checkresult = ''
+            filelist = ['add_times_info_doudizhu.xlsx', 'game_config.xlsx', 'handcard_info.xlsx', 'person_aicontrol_info.xlsx',
+                        'platform_group_control.xlsx', 'platform_person_control.xlsx', 'takecard_info.xlsx', 'type_score_xuezhan.xlsx', 'xuezhandaodi.xlsx']
+            for filename in filelist:
+                fileurl = r'/home/配置表/{}'.format(filename)
+                sheet = openxl(fileurl)
+                xl_rows = sheet.nrows
+                xl_rows -= 4
+                try:
+                    for row in range(xl_rows):
+                        sql = 'select * from {} where id={}'.format(filename[:-5], row+1)
+                        sql_result = con_mysql(sql)
+                        sql_result = list(sql_result)
+                        xl_result = sheet.row_values(row+4)
+                        for i in range(len(xl_result)):
+                            if type(xl_result[i]) is float:
+                                xl_result[i] = round(xl_result[i])
+                            if sql_result[i] != xl_result[i] and type(sql_result[i]) == type(xl_result[i]):
+                                result = '表名：{},第{}行,第{}列->ERROR! 配置表为：{} 数据库为：{} 表地址：{}\n'.format(filename, row+1, i+1, xl_result[i], sql_result[i], fileurl)
+                                # result = result.ljust(150, ' ')
+                                checkresult += result
+                except:
+                    pass
+            if len(checkresult) == 0:
+                return render_template('checkconfig.html', CheckResult='恭喜！本次数据表检查没有发现差异！')
+            return render_template('checkconfig.html', CheckResult=checkresult)
     return render_template('checkconfig.html')
 
 
