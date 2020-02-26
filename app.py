@@ -166,8 +166,8 @@ def doudz_extends():
                 return render_template('doudz_extends.html', Tips='配牌不能为空！', User_id=gameID, Server_url=url)
             elif len(set(card_list)) != len(card_list):
                 return render_template('doudz_extends.html', Tips='每张牌只支持配置1次，请检查配置！', User_id=gameID, Server_url=url)
-            elif len(card_ID) != 85:
-                return render_template('doudz_extends.html', Tips='请配置17张牌！', User_id=gameID, Server_url=url)
+            # elif len(card_ID) != 95:
+            #     return render_template('doudz_extends.html', Tips='请配置17张牌！', User_id=gameID, Server_url=url)
             elif gameID.isdigit() is False:
                 return render_template('doudz_extends.html', Tips='请输入正确的游戏ID！', User_id=gameID, Server_url=url)
             else:
@@ -198,7 +198,7 @@ def doudz_extends():
 @app.route('/maj_TestCoverage.html', methods=['GET', 'POST'])
 def maj_TestCoverage():
     if request.method == 'GET':
-        latesttime = time.ctime(os.path.getmtime('E:/WebTestTool/xuezhandaodi.out'))
+        latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
         return render_template('maj_TestCoverage.html', LatestTime=latesttime)
     if request.method == 'POST':
         if request.form['Submit_Button'] == '下载日志':
@@ -206,8 +206,8 @@ def maj_TestCoverage():
                 ser_url = paramiko.Transport('10.0.0.32', 22)
                 ser_url.connect(username='testsvr', password='123456')
                 sftp = paramiko.SFTPClient.from_transport(ser_url)
-                sftp.get('/tmp/xuezhandaodi.out', 'E:/WebTestTool/xuezhandaodi.out')
-                latesttime = time.ctime(os.path.getmtime('E:/WebTestTool/xuezhandaodi.out'))
+                sftp.get('/tmp/xuezhandaodi.out', '/home/test/WebTestTool/xuezhandaodi.out')
+                latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
                 ser_url.close()
                 return render_template('maj_TestCoverage.html', Tips='下载成功', LatestTime=latesttime)
             except:
@@ -254,7 +254,7 @@ def maj_TestCoverage():
 @app.route('/doudz_TestCoverage.html', methods=['GET', 'POST'])
 def doudz_TestCoverage():
     if request.method == 'GET':
-        latesttime = time.ctime(os.path.getmtime('E:/WebTestTool/doudizhu.out'))
+        latesttime = time.ctime(os.path.getmtime('/home/test//WebTestTool/doudizhu.out'))
         return render_template('doudz_TestCoverage.html', LatestTime=latesttime)
     if request.method == 'POST':
         if request.form['Submit_Button'] == '下载日志':
@@ -262,8 +262,8 @@ def doudz_TestCoverage():
                 ser_url = paramiko.Transport('10.0.0.32', 22)
                 ser_url.connect(username='testsvr', password='123456')
                 sftp = paramiko.SFTPClient.from_transport(ser_url)
-                sftp.get('/tmp/doudizhu.out', 'E:/WebTestTool/doudizhu.out')
-                latesttime = time.ctime(os.path.getmtime('E:/WebTestTool/doudizhu.out'))
+                sftp.get('/tmp/doudizhu.out', '/home/test/WebTestTool/doudizhu.out')
+                latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/doudizhu.out'))
                 ser_url.close()
                 return render_template('doudz_TestCoverage.html', Tips='下载成功', LatestTime=latesttime)
             except:
