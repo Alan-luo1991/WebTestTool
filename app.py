@@ -217,41 +217,41 @@ def maj_TestCoverage():
         if request.form['Submit_Button'] == '查看按钮':
             if os.path.exists('/home/test/WebTestTool/xuezhandaodi.out') is True:
                 latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
-            with open('/home/test/WebTestTool/xuezhandaodi.out', 'r', encoding='utf8') as f:
-                a = f.readlines()
-                resultControl = []
-                test_result1 = ''
-                test_result2 = ''
-                timedata = str(request.form['time'])
-                for i in a:
-                    key = 'resultControl'
-                    if key in i and timedata in i:
-                        resultControl.append(i)
-                cardtype = {'DuiDuiHu': '对对胡', 'QingYiSe': '清一色', 'XiaoQiDui': '小七对',
-                            'LongQiDui': '龙七对', 'QingDui': '清对',
-                            'JiangDui': '将对', 'QingQiDui': '清七对', 'JiangQiDui': '将七对', 'QingLongQiDui': '清龙七对',
-                            'ShiBaLuoHan': '十八罗汉',
-                            'QingShiBaLuoHan': '清十八罗汉', 'JiangJinGouDiao': '将金钩钓', 'QingJinGouDiao': '清金钩钩',
-                            'QingYaoJiu': '清幺九',
-                            'CT_NONE': '无叫', 'DianGang': '点杠', 'BaGang': '巴杠', 'AnGang': '暗杠', 'HuPai': '点炮',
-                            'Zimo': '自摸', 'ChaDaJiao': '查大叫',
-                            'Huazhu': '花猪', 'ServiceFee': '服务费', 'ZhuanYu': '转雨', 'GangShangKaiHua': '杠上开花',
-                            'GangShangPao': '杠上炮',
-                            'QiangGangHu': '抢杠胡', 'HaiDiLaoYue': '海底捞月', 'JinGouDiao': '金钩钩', 'TianHu': '天胡',
-                            'DiHu': '地胡', 'RenHu': '人胡',
-                            'DuanYaoQiu': '断幺九', 'MengQing': '门清', 'DaiYaoJiu': '带幺九'}
-                cardindex = 1
-                for cardtypeid in cardtype:
-                    for result in resultControl:
-                        if cardtypeid in result:
-                            a = 1
-                            test_result1 += ''.join('牌型{}：{}  已覆盖\n'.format(cardindex, cardtype[cardtypeid]))
-                            break
-                    if a != 1:
-                        test_result2 += ''.join('牌型{}：{}  未覆盖\n'.format(cardindex, cardtype[cardtypeid]))
-                    a = 0
-                    cardindex += 1
-                return render_template('maj_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
+                with open('/home/test/WebTestTool/xuezhandaodi.out', 'r', encoding='utf8') as f:
+                    a = f.readlines()
+                    resultControl = []
+                    test_result1 = ''
+                    test_result2 = ''
+                    timedata = str(request.form['time'])
+                    for i in a:
+                        key = 'resultControl'
+                        if key in i and timedata in i:
+                            resultControl.append(i)
+                    cardtype = {'DuiDuiHu': '对对胡', 'QingYiSe': '清一色', 'XiaoQiDui': '小七对',
+                                'LongQiDui': '龙七对', 'QingDui': '清对',
+                                'JiangDui': '将对', 'QingQiDui': '清七对', 'JiangQiDui': '将七对', 'QingLongQiDui': '清龙七对',
+                                'ShiBaLuoHan': '十八罗汉',
+                                'QingShiBaLuoHan': '清十八罗汉', 'JiangJinGouDiao': '将金钩钓', 'QingJinGouDiao': '清金钩钩',
+                                'QingYaoJiu': '清幺九',
+                                'CT_NONE': '无叫', 'DianGang': '点杠', 'BaGang': '巴杠', 'AnGang': '暗杠', 'HuPai': '点炮',
+                                'Zimo': '自摸', 'ChaDaJiao': '查大叫',
+                                'Huazhu': '花猪', 'ServiceFee': '服务费', 'ZhuanYu': '转雨', 'GangShangKaiHua': '杠上开花',
+                                'GangShangPao': '杠上炮',
+                                'QiangGangHu': '抢杠胡', 'HaiDiLaoYue': '海底捞月', 'JinGouDiao': '金钩钩', 'TianHu': '天胡',
+                                'DiHu': '地胡', 'RenHu': '人胡',
+                                'DuanYaoQiu': '断幺九', 'MengQing': '门清', 'DaiYaoJiu': '带幺九'}
+                    cardindex = 1
+                    for cardtypeid in cardtype:
+                        for result in resultControl:
+                            if cardtypeid in result:
+                                a = 1
+                                test_result1 += ''.join('牌型{}：{}  已覆盖\n'.format(cardindex, cardtype[cardtypeid]))
+                                break
+                        if a != 1:
+                            test_result2 += ''.join('牌型{}：{}  未覆盖\n'.format(cardindex, cardtype[cardtypeid]))
+                        a = 0
+                        cardindex += 1
+                    return render_template('maj_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
     return render_template('maj_TestCoverage.html')
 
 
@@ -277,35 +277,35 @@ def doudz_TestCoverage():
         if request.form['Submit_Button'] == '查看按钮':
             if os.path.exists('/home/test//WebTestTool/doudizhu.out') is True:
                 latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/doudizhu.out'))
-            with open('/home/test/WebTestTool/doudizhu.out', 'r', encoding='utf8') as f:
-                a = f.readlines()
-                resultControl = []
-                test_result1 = ''
-                test_result2 = ''
-                timedata = str(request.form['time'])
-                for i in a:
-                    key = ''
-                    if key in i and timedata in i:
-                        resultControl.append(i)
-                cardtype = {'JiaoDZ': '叫地主', 'QiangDZ': '抢地主', 'XuanBeiShu': '选倍数', 'Put': '出牌', 'Zha': '炸',
-                            'Pass': '过', 'PuTongJiaBei': '普通加倍', 'ChaojiJiaBei': '超级加倍', 'JiaoDizhuAddTimes': '叫地主加倍',
-                            'QiangDizhuAddTimes': '抢地主加倍', 'BombAddTimes': '炸弹加倍', 'WangZhaAddTimes': '王炸加倍', 'RocketAddTimes': '火箭加倍',
-                            'SpringAddTimes': '春天加倍', 'AntiSpringAddTimes': '反春天加倍', 'DizhuAddTimes': '地主加倍', 'BuJiaBei': '不加倍',
-                            'DanPai': '单牌', 'DuiZi': '对子', 'SanZhang': '单三张', 'ZhaDan': '炸弹类型', 'HuoJian': '火箭类型', 'ShunZi': '顺子',
-                            'LianDui': '连续对子', 'SanDaiYi': '三带一单', 'SanDaiDui': '三带一对', 'FeiJi': '飞机', 'FeiJiDaiDanChi': '飞机带单翅膀',
-                            'FeiJiDaiShuang': '飞机带双翅膀', 'SiDaiDan': '四带两单', 'SiDaiDui': '四带两对', 'ServiceFee': '服务费'}
-                cardindex = 1
-                for cardtypeid in cardtype:
-                    for result in resultControl:
-                        if cardtypeid in result:
-                            a = 1
-                            test_result1 += ''.join('牌型{}：{}  已覆盖\n'.format(cardindex, cardtype[cardtypeid]))
-                            break
-                    if a != 1:
-                        test_result2 += ''.join('牌型{}：{}  未覆盖\n'.format(cardindex, cardtype[cardtypeid]))
-                    a = 0
-                    cardindex += 1
-                return render_template('doudz_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
+                with open('/home/test/WebTestTool/doudizhu.out', 'r', encoding='utf8') as f:
+                    a = f.readlines()
+                    resultControl = []
+                    test_result1 = ''
+                    test_result2 = ''
+                    timedata = str(request.form['time'])
+                    for i in a:
+                        key = ''
+                        if key in i and timedata in i:
+                            resultControl.append(i)
+                    cardtype = {'JiaoDZ': '叫地主', 'QiangDZ': '抢地主', 'XuanBeiShu': '选倍数', 'Put': '出牌', 'Zha': '炸',
+                                'Pass': '过', 'PuTongJiaBei': '普通加倍', 'ChaojiJiaBei': '超级加倍', 'JiaoDizhuAddTimes': '叫地主加倍',
+                                'QiangDizhuAddTimes': '抢地主加倍', 'BombAddTimes': '炸弹加倍', 'WangZhaAddTimes': '王炸加倍', 'RocketAddTimes': '火箭加倍',
+                                'SpringAddTimes': '春天加倍', 'AntiSpringAddTimes': '反春天加倍', 'DizhuAddTimes': '地主加倍', 'BuJiaBei': '不加倍',
+                                'DanPai': '单牌', 'DuiZi': '对子', 'SanZhang': '单三张', 'ZhaDan': '炸弹类型', 'HuoJian': '火箭类型', 'ShunZi': '顺子',
+                                'LianDui': '连续对子', 'SanDaiYi': '三带一单', 'SanDaiDui': '三带一对', 'FeiJi': '飞机', 'FeiJiDaiDanChi': '飞机带单翅膀',
+                                'FeiJiDaiShuang': '飞机带双翅膀', 'SiDaiDan': '四带两单', 'SiDaiDui': '四带两对', 'ServiceFee': '服务费'}
+                    cardindex = 1
+                    for cardtypeid in cardtype:
+                        for result in resultControl:
+                            if cardtypeid in result:
+                                a = 1
+                                test_result1 += ''.join('牌型{}：{}  已覆盖\n'.format(cardindex, cardtype[cardtypeid]))
+                                break
+                        if a != 1:
+                            test_result2 += ''.join('牌型{}：{}  未覆盖\n'.format(cardindex, cardtype[cardtypeid]))
+                        a = 0
+                        cardindex += 1
+                    return render_template('doudz_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
     return render_template('doudz_TestCoverage.html')
 
 
