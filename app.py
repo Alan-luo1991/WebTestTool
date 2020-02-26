@@ -214,7 +214,8 @@ def maj_TestCoverage():
             except:
                 return render_template('maj_TestCoverage.html', Tips='下载失败')
         if request.form['Submit_Button'] == '查看按钮':
-            with open('E:/WebTestTool/xuezhandaodi.out', 'r', encoding='utf8') as f:
+            latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
+            with open('/home/test/WebTestTool/xuezhandaodi.out', 'r', encoding='utf8') as f:
                 a = f.readlines()
                 resultControl = []
                 test_result1 = ''
@@ -248,7 +249,7 @@ def maj_TestCoverage():
                         test_result2 += ''.join('牌型{}：{}  未覆盖\n'.format(cardindex, cardtype[cardtypeid]))
                     a = 0
                     cardindex += 1
-                return render_template('maj_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata)
+                return render_template('maj_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
     return render_template('maj_TestCoverage.html')
 
 
@@ -271,8 +272,8 @@ def doudz_TestCoverage():
             except:
                 return render_template('doudz_TestCoverage.html', Tips='下载失败')
         if request.form['Submit_Button'] == '查看按钮':
-            latesttime = time.ctime(os.path.getmtime('E:/WebTestTool/doudizhu.out'))
-            with open('E:/WebTestTool/doudizhu.out', 'r', encoding='utf8') as f:
+            latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/doudizhu.out'))
+            with open('/home/test/WebTestTool/doudizhu.out', 'r', encoding='utf8') as f:
                 a = f.readlines()
                 resultControl = []
                 test_result1 = ''
