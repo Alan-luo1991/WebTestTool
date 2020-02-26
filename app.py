@@ -315,7 +315,7 @@ def checkconfig():
     if request.method == 'POST':
         if request.form['checkconfig'] == '更新配置表':
             r = svn.remote.RemoteClient(r'https://10.0.0.22/svn/designer/配置表')
-            r.checkout('/home')
+            r.checkout(r'/home/配置表')
         if request.form['checkconfig'] == '开始检查':
             checkresult = ''
             filelist = ['add_times_info_doudizhu.xlsx', 'game_config.xlsx', 'handcard_info.xlsx', 'person_aicontrol_info.xlsx',
