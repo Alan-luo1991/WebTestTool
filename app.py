@@ -197,6 +197,7 @@ def doudz_extends():
 
 @app.route('/maj_TestCoverage.html', methods=['GET', 'POST'])
 def maj_TestCoverage():
+    latesttime = ''
     if request.method == 'GET':
         if os.path.exists('/home/test/WebTestTool/xuezhandaodi.out') is True:
             latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
@@ -214,7 +215,8 @@ def maj_TestCoverage():
             except:
                 return render_template('maj_TestCoverage.html', Tips='下载失败')
         if request.form['Submit_Button'] == '查看按钮':
-            latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
+            if os.path.exists('/home/test/WebTestTool/xuezhandaodi.out') is True:
+                latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
             with open('/home/test/WebTestTool/xuezhandaodi.out', 'r', encoding='utf8') as f:
                 a = f.readlines()
                 resultControl = []
@@ -255,6 +257,7 @@ def maj_TestCoverage():
 
 @app.route('/doudz_TestCoverage.html', methods=['GET', 'POST'])
 def doudz_TestCoverage():
+    latesttime = ''
     if request.method == 'GET':
         if os.path.exists('/home/test//WebTestTool/doudizhu.out') is True:
             latesttime = time.ctime(os.path.getmtime('/home/test//WebTestTool/doudizhu.out'))
@@ -272,7 +275,8 @@ def doudz_TestCoverage():
             except:
                 return render_template('doudz_TestCoverage.html', Tips='下载失败')
         if request.form['Submit_Button'] == '查看按钮':
-            latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/doudizhu.out'))
+            if os.path.exists('/home/test//WebTestTool/doudizhu.out') is True:
+                latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/doudizhu.out'))
             with open('/home/test/WebTestTool/doudizhu.out', 'r', encoding='utf8') as f:
                 a = f.readlines()
                 resultControl = []
