@@ -18,7 +18,7 @@ import paramiko
 import os.path
 import time
 import xlrd
-import math
+import os
 
 
 # 实例化，可视为固定格式
@@ -198,8 +198,9 @@ def doudz_extends():
 @app.route('/maj_TestCoverage.html', methods=['GET', 'POST'])
 def maj_TestCoverage():
     if request.method == 'GET':
-        latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
-        return render_template('maj_TestCoverage.html', LatestTime=latesttime)
+        if os.path.exists('/home/test/WebTestTool/xuezhandaodi.out') is True:
+            latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
+            return render_template('maj_TestCoverage.html', LatestTime=latesttime)
     if request.method == 'POST':
         if request.form['Submit_Button'] == '下载日志':
             try:
@@ -254,8 +255,9 @@ def maj_TestCoverage():
 @app.route('/doudz_TestCoverage.html', methods=['GET', 'POST'])
 def doudz_TestCoverage():
     if request.method == 'GET':
-        latesttime = time.ctime(os.path.getmtime('/home/test//WebTestTool/doudizhu.out'))
-        return render_template('doudz_TestCoverage.html', LatestTime=latesttime)
+        if os.path.exists('/home/test//WebTestTool/doudizhu.out') is True:
+            latesttime = time.ctime(os.path.getmtime('/home/test//WebTestTool/doudizhu.out'))
+            return render_template('doudz_TestCoverage.html', LatestTime=latesttime)
     if request.method == 'POST':
         if request.form['Submit_Button'] == '下载日志':
             try:
