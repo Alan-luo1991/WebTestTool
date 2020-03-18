@@ -20,7 +20,6 @@ import time
 import xlrd
 import os
 import svn.remote
-import pandas as pd
 
 
 # 实例化，可视为固定格式
@@ -348,14 +347,14 @@ def checkconfig():
     return render_template('checkconfig.html')
 
 
-@app.route('/testcase.html', methods=['GET', 'POST'])
-def testcase():
-    csv = open(r'E:\MyTest\测试用例\血战麻将测试用例V2.0-定稿.csv')
-    case = pd.read_csv(csv)
-    case = case.pd.DataFrame.head(5)
-    test1 = '和实话实说'
-    print(case)
-    return render_template('testcase.html', Case=case, Test1=test1)
+# @app.route('/testcase.html', methods=['GET', 'POST'])
+# def testcase():
+#     csv = open(r'E:\MyTest\测试用例\血战麻将测试用例V2.0-定稿.csv')
+#     case = pd.read_csv(csv)
+#     case = case.pd.DataFrame.head(5)
+#     test1 = '和实话实说'
+#     print(case)
+#     return render_template('testcase.html', Case=case, Test1=test1)
 
 
 if __name__ == '__main__':
