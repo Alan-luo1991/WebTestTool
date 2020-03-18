@@ -205,7 +205,8 @@
                 <textarea rows="33" cols="27" style="color: #90111A">{{ TestResult2 }}</textarea>
             </div>
             <label style="margin-left: 20px">查询时间：</label><input id="time" type="text" name="time" value="{{ Time }}" style="width: 200px">
-            <input id="viewbutton" type="submit" name="Submit_Button"  value="查看按钮">
+            <input id="viewbutton" type="submit" name="Submit_Button"  value="查看按钮"><br>
+            <label style="margin-left: 20px">日志地址：</label><input id="logurl" type="text" name="logurl" style="width: 200px">
             <input id="download" type="submit" name="Submit_Button" onclick="alert('开始下载，文件较大，预计需要1-2分钟，请耐心等待...')" value="下载日志"><br>
             <label style="margin-left: 20px">下载结果：</label><strong style="color: #90111A; font-size: 25px">{{ Tips }}</strong><br>
             <label style="margin-left: 20px">日志更新时间：</label><strong style="color: #90111A; font-size: 22px">{{ LatestTime }}</strong>

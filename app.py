@@ -261,25 +261,26 @@ def maj_TestCoverage():
 def doudz_TestCoverage():
     latesttime = ''
     if request.method == 'GET':
-        if os.path.exists('/home/test//WebTestTool/doudizhu.out') is True:
-            latesttime = time.ctime(os.path.getmtime('/home/test//WebTestTool/doudizhu.out'))
+        if os.path.exists('/home/test/WebTestTool/stdout') is True:
+            latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/stdout'))
             return render_template('doudz_TestCoverage.html', LatestTime=latesttime)
     if request.method == 'POST':
         if request.form['Submit_Button'] == '下载日志':
             try:
-                ser_url = paramiko.Transport('10.0.0.32', 22)
-                ser_url.connect(username='testsvr', password='123456')
+                logurl = request.form['logurl']
+                ser_url = paramiko.Transport(logurl, 22)
+                ser_url.connect(username='root', password='123456')
                 sftp = paramiko.SFTPClient.from_transport(ser_url)
-                sftp.get('/tmp/doudizhu.out', '/home/test/WebTestTool/doudizhu.out')
-                latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/doudizhu.out'))
+                sftp.get('/tmp/stdout', '/home/test/WebTestTool/stdout')
+                latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/stdout'))
                 ser_url.close()
                 return render_template('doudz_TestCoverage.html', Tips='下载成功', LatestTime=latesttime)
             except:
                 return render_template('doudz_TestCoverage.html', Tips='下载失败')
         if request.form['Submit_Button'] == '查看按钮':
-            if os.path.exists('/home/test//WebTestTool/doudizhu.out') is True:
-                latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/doudizhu.out'))
-                with open('/home/test/WebTestTool/doudizhu.out', 'r', encoding='utf8') as f:
+            if os.path.exists('/home/test//WebTestTool/stdout') is True:
+                latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/stdout'))
+                with open('/home/test/WebTestTool/stdout', 'r', encoding='utf8') as f:
                     a = f.readlines()
                     resultControl = []
                     test_result1 = ''
