@@ -25,22 +25,22 @@
           <ul class="nav nav-drawer">
             <li class="nav-item active"> <a href="homepage.html"><i class="mdi mdi-home"></i>测试工具合集</a> </li>
             <li class="nav-item nav-item-has-subnav active open">
-              <a href="javascript:void(0)"><i class="mdi mdi-format-align-justify"></i>配牌工具</a>
+              <a href="javascript:void(0)"><i class="mdi mdi-menu"></i>配牌工具</a>
               <ul class="nav nav-subnav">
                 <li> <a href="maj_extends.html">血战到底</a> </li>
                 <li class="active"> <a href="doudz_extends.html">斗地主</a> </li>
               </ul>
             </li>
             <li class="nav-item nav-item-has-subnav">
-              <a href="javascript:void(0)"><i class="mdi mdi-format-align-justify"></i>测试覆盖度</a>
+              <a href="javascript:void(0)"><i class="mdi mdi-menu"></i>测试覆盖度</a>
               <ul class="nav nav-subnav">
                 <li> <a href="maj_TestCoverage.html">血战到底</a> </li>
                 <li class="active"> <a href="doudz_TestCoverage.html">斗地主</a> </li>
               </ul>
             </li>
-            <li class="nav-item active"> <a href="checkconfig.html"><i class="mdi mdi-menu"></i>配置表检查</a> </li>
-            <li class="nav-item active"> <a href="homepage.html"><i class="mdi mdi-menu"></i>协议测试</a> </li>
-            <li class="nav-item active"> <a href="homepage.html"><i class="mdi mdi-menu"></i>接口自动化</a> </li>
+            <li class="nav-item active"> <a href="checkconfig.html"><i class="mdi mdi-file-outline"></i>配置表检查</a> </li>
+            <li class="nav-item active"> <a href="homepage.html"><i class="mdi mdi-file-outline"></i>协议测试</a> </li>
+            <li class="nav-item active"> <a href="homepage.html"><i class="mdi mdi-file-outline"></i>接口自动化</a> </li>
           </ul>
         </nav>
       </div>
@@ -241,7 +241,7 @@
             <input id="UserIdData" type="text" name="User_Id_Data"  value="{{ User_id }}" style="width: 200px">
             <input id="SendCardData" type="submit" name="Submit_Button" onclick="Server_Url()" value="确认发送" style="width: 80px; height: 30px; margin-left: 437px;"><br>
             <label for="ServerUrlData" style="margin-left: 60px; margin-top: 20px">服务器：</label>
-            <input id="ServerUrlData" type="text" name="Server_Url_Data" value="http://10.0.0.32:6800/config" style="width: 200px">
+            <input id="ServerUrlData" type="text" name="Server_Url_Data" value="http://10.0.0.32:8080/game/setDoudizhu" style="width: 200px">
             <input id="CleanCardDate" type="button" name="Clean_Card_Date" value="重置牌型" onclick="document.getElementById('CardName').value = ''" style="width: 80px; height: 30px; margin-left: 437px;"><br>
             <label for="GoldNumberData" style="margin-left: 60px; margin-top: 20px">金币数：</label>
             <input id="GoldNumberData" type="text" name="Gold_Number_Data" value="0"style="width: 200px">

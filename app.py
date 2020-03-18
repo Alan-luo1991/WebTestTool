@@ -20,6 +20,7 @@ import time
 import xlrd
 import os
 import svn.remote
+import pandas as pd
 
 
 # 实例化，可视为固定格式
@@ -59,9 +60,9 @@ def openxl(fileurl):
 
 
 # route()方法用于设定路由；类似spring路由配置
-@app.route('/')
+@app.route('/login.html', methods=['GET', 'POST'])
 def hello_world():
-    return 'Hello, World!'
+    return render_template('login.html')
 
 
 @app.route("/homepage.html", methods=['GET', 'POST'])
@@ -174,6 +175,7 @@ def doudz_extends():
             else:
                 try:
                     res = requests.get(url + '?user_id=' + gameID + '&doudizhu=' + card_ID[:-1], timeout=(3, 3))
+                    print(url + '?user_id=' + gameID + '&doudizhu=' + card_ID[:-1])
                     # print('{}?user_id={}&doudizhu={}'.format(url, gameID, card_ID[:-1]))
                     return render_template('doudz_extends.html', Tips=res.text, User_id=gameID, Server_url=url)
                 except:
@@ -344,6 +346,16 @@ def checkconfig():
                 return render_template('checkconfig.html', CheckResult='恭喜！本次数据表检查没有发现差异！')
             return render_template('checkconfig.html', CheckResult=checkresult)
     return render_template('checkconfig.html')
+
+
+@app.route('/testcase.html', methods=['GET', 'POST'])
+def testcase():
+    csv = open(r'E:\MyTest\测试用例\血战麻将测试用例V2.0-定稿.csv')
+    case = pd.read_csv(csv)
+    case = case.pd.DataFrame.head(5)
+    test1 = '和实话实说'
+    print(case)
+    return render_template('testcase.html', Case=case, Test1=test1)
 
 
 if __name__ == '__main__':
