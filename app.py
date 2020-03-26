@@ -163,12 +163,13 @@ def doudz_extends():
             card_ID = ''.join(dict_ddz[i] for i in card_list if i != '')
             gameID = str(request.form['User_Id_Data'])
             url = str(request.form['Server_Url_Data'])
+            print(len(card_ID))
             if len(card_ID) == 0:
                 return render_template('doudz_extends.html', Tips='配牌不能为空！', User_id=gameID, Server_url=url)
             elif len(set(card_list)) != len(card_list):
                 return render_template('doudz_extends.html', Tips='每张牌只支持配置1次，请检查配置！', User_id=gameID, Server_url=url)
-            # elif len(card_ID) != 95:
-            #     return render_template('doudz_extends.html', Tips='请配置17张牌！', User_id=gameID, Server_url=url)
+            elif len(card_ID) != 85:
+                return render_template('doudz_extends.html', Tips='请配置17张牌！', User_id=gameID, Server_url=url)
             elif gameID.isdigit() is False:
                 return render_template('doudz_extends.html', Tips='请输入正确的游戏ID！', User_id=gameID, Server_url=url)
             else:
