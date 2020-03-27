@@ -156,7 +156,7 @@ def maj_extends():
 def doudz_extends():
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
-            card_str = request.form['Card_Name']
+            card_str = request.form['CardName_doudz']
             print(card_str)
             card_list = card_str[:-1].split(',')
             print(card_list)

@@ -202,7 +202,7 @@
         <form method="post">
             <div style="padding-top: 10px; padding-left: 60px;">
                 <h1 style="margin-left: 310px">配牌区域</h1>
-                <input id="CardName" type="text" name="Card_Name" style="width: 780px; height: 60px;"><br>
+                <input id="CardName_doudz" type="text" name="CardName_doudz" style="width: 780px; height: 50px;"><br>
                 <script type="text/javascript">
                 var card_dict = {'0x01': '方块A', '0x02': '方块2', '0x03': '方块3', '0x04': '方块4', '0x05': '方块5', '0x06': '方块6',
                 '0x07': '方块7', '0x08': '方块8', '0x09': '方块9', '0x0A': '方块10', '0x0B': '方块J', '0x0C': '方块Q',
@@ -217,7 +217,7 @@
                 for (var i in card_dict) {
                     console.log(i);
                     var button;
-                    button = "<input type='button' name='name' onclick='CardList(" + i + ")' style='width: 60px; max-height: 200px' value=" + card_dict[i] +">";
+                    button = "<input type='button' name='name_doudz' onclick='CardList(" + i + ")' style='width: 60px; max-height: 200px' value=" + card_dict[i] +">";
                     if (button_num % 13 == 0){
                         button = button + "<br>";
                     }
@@ -232,7 +232,7 @@
                         b = '0x' + i.toString(16).toUpperCase();
                     }
                     console.log(b);
-                    a = document.getElementById("CardName");
+                    a = document.getElementById("CardName_doudz");
                     a.value += card_dict[b] + ',';
                 }
                 </script>
@@ -242,7 +242,7 @@
             <input id="SendCardData" type="submit" name="Submit_Button" onclick="Server_Url()" value="确认发送" style="width: 80px; height: 30px; margin-left: 437px;"><br>
             <label for="ServerUrlData" style="margin-left: 60px; margin-top: 20px">服务器：</label>
             <input id="ServerUrlData" type="text" name="Server_Url_Data" value="http://10.0.0.32:8080/game/setDoudizhu" style="width: 200px">
-            <input id="CleanCardDate" type="button" name="Clean_Card_Date" value="重置牌型" onclick="document.getElementById('CardName').value = ''" style="width: 80px; height: 30px; margin-left: 437px;"><br>
+            <input id="CleanCardDate" type="button" name="Clean_Card_Date" value="重置牌型" onclick="document.getElementById('CardName_doudz').value = ''" style="width: 80px; height: 30px; margin-left: 437px;"><br>
             <label for="GoldNumberData" style="margin-left: 60px; margin-top: 20px">金币数：</label>
             <input id="GoldNumberData" type="text" name="Gold_Number_Data" value="0"style="width: 200px">
             <input id="UpdateGold" type="submit" name="Submit_Button" value="修改金币" style="width: 80px; height: 30px; margin-left: 437px;"><br>
