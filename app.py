@@ -155,6 +155,15 @@ def maj_extends():
 
 @app.route('/doudz_extends.html', methods=['GET', 'POST'])
 def doudz_extends():
+    if request.method == 'GET':
+        myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
+        mydb = myclient['wanke']
+        mycol = mydb['gamekind']
+        result = mycol.find_one({'gameType': 100, 'enabled': bool(2 > 1)}, {'_id': 0, 'matchIp': 1})
+        if result['matchIp'] is False:
+            return render_template('doudz_extends.html', IPresult='已关闭')
+        if result['matchIp'] is True:
+            return render_template('doudz_extends.html', IPresult='已打开')
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             card_str = request.form['CardName_doudz']
@@ -197,24 +206,22 @@ def doudz_extends():
             except:
                 return render_template('doudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
         if request.form['Submit_Button'] == '重新加载':
-            switch = str(request.form['e'])
+            switch = request.form['e']
+            if switch is None:
+                render_template('doudz_extends.html')
             myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
             mydb = myclient['wanke']
             mycol = mydb['gamekind']
-            myquery = {'gameType': 100}
+            myquery = {'gameType': 100, 'enabled': bool(2 > 1)}
             if switch == 'open':
-                newvalue = {'$set': {'matchIp': 'true'}}
-                x = mycol.update_many(myquery, newvalue)
-                print(x.modified_count)
-                res = requests.get('http://10.0.0.204:30016/user/updategame')
-                print(res.text)
+                newvalue = {'$set': {'matchIp': bool(2 > 1)}}
+                mycol.update_many(myquery, newvalue)
+                requests.get('http://10.0.0.204:30016/user/updategame')
                 return render_template('doudz_extends.html', Tips='IP限制已打开，相同IP无法匹配成功')
             if switch == 'close':
-                newvalue = {'$set': {'matchIp': 'false'}}
-                x = mycol.update_many(myquery, newvalue)
-                print(x.modified_count)
-                res = requests.get('http://10.0.0.204:30016/user/updategame')
-                print(res.text)
+                newvalue = {'$set': {'matchIp': bool(1 > 2)}}
+                mycol.update_many(myquery, newvalue)
+                requests.get('http://10.0.0.204:30016/user/updategame')
                 return render_template('doudz_extends.html', Tips='IP限制已关闭，相同IP可以匹配了')
     return render_template('doudz_extends.html')
 
