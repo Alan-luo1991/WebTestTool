@@ -20,6 +20,7 @@ import time
 import xlrd
 import os
 import svn.remote
+import pymongo
 
 
 # 实例化，可视为固定格式
@@ -195,6 +196,26 @@ def doudz_extends():
                 return render_template('doudz_extends.html', Tips='修改金币成功', User_id=gameID)
             except:
                 return render_template('doudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
+        if request.form['Submit_Button'] == '重新加载':
+            switch = str(request.form['e'])
+            myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
+            mydb = myclient['wanke']
+            mycol = mydb['gamekind']
+            myquery = {'gameType': 100}
+            if switch == 'open':
+                newvalue = {'$set': {'matchIp': 'true'}}
+                x = mycol.update_many(myquery, newvalue)
+                print(x.modified_count)
+                res = requests.get('http://10.0.0.204:30016/user/updategame')
+                print(res.text)
+                return render_template('doudz_extends.html', Tips='IP限制已打开，相同IP无法匹配成功')
+            if switch == 'close':
+                newvalue = {'$set': {'matchIp': 'false'}}
+                x = mycol.update_many(myquery, newvalue)
+                print(x.modified_count)
+                res = requests.get('http://10.0.0.204:30016/user/updategame')
+                print(res.text)
+                return render_template('doudz_extends.html', Tips='IP限制已关闭，相同IP可以匹配了')
     return render_template('doudz_extends.html')
 
 
@@ -357,6 +378,10 @@ def checkconfig():
 #     test1 = '和实话实说'
 #     print(case)
 #     return render_template('testcase.html', Case=case, Test1=test1)
+
+# @app.route('prototest.html', methods=['GET', 'POST'])
+# def peotorest():
+#     protocol_client.protocol_client.loginhall()
 
 
 if __name__ == '__main__':
