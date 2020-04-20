@@ -27,9 +27,9 @@ import pymongo
 app = Flask(__name__)
 
 
-dict_maj = dict(一万='11,', 二万='12,', 三万='13,', 四万='14,', 五万='15,', 六万='16,', 七万='17,', 八万='18,', 九万='19,',
-                一筒='21,', 二筒='22,', 三筒='23,', 四筒='24,', 五筒='25,', 六筒='26,', 七筒='27,', 八筒='28,', 九筒='29,',
-                一条='31,', 二条='32,', 三条='33,', 四条='34,', 五条='35,', 六条='36,', 七条='37,', 八条='38,', 九条='39,',)
+dict_maj = dict(一万='11', 二万='12', 三万='13', 四万='14', 五万='15', 六万='16', 七万='17', 八万='18', 九万='19',
+                一筒='21', 二筒='22', 三筒='23', 四筒='24', 五筒='25', 六筒='26', 七筒='27', 八筒='28', 九筒='29',
+                一条='31', 二条='32', 三条='33', 四条='34', 五条='35', 六条='36', 七条='37', 八条='38', 九条='39',)
 
 
 dict_ddz = dict(方块A='0x01', 方块2='0x02', 方块3='0x03', 方块4='0x04', 方块5='0x05', 方块6='0x06', 方块7='0x07', 方块8='0x08',
@@ -108,7 +108,7 @@ def maj_extends():
                     card_data = {'gameId': "600102", 'usersCards': [{'userId': user_id, 'cards': card_ID}]}
                     # res = requests.get(get_url)
                     res = requests.post(server_url, json=card_data)
-                    print(res.text)
+                    print(server_url, card_data)
                     return render_template('maj_extends.html', Tips=res.text, User_id=user_id, Player=player)
                 except:
                     pass
