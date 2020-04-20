@@ -32,13 +32,13 @@ dict_maj = dict(一万='11,', 二万='12,', 三万='13,', 四万='14,', 五万='
                 一条='31,', 二条='32,', 三条='33,', 四条='34,', 五条='35,', 六条='36,', 七条='37,', 八条='38,', 九条='39,',)
 
 
-dict_ddz = dict(方块A='0x01,', 方块2='0x02,', 方块3='0x03,', 方块4='0x04,', 方块5='0x05,', 方块6='0x06,', 方块7='0x07,', 方块8='0x08,',
-                方块9='0x09,', 方块10='0x0A,', 方块J='0x0B,', 方块Q='0x0C,', 方块K='0x0D,', 梅花A='0x11,', 梅花2='0x12,', 梅花3='0x13,',
-                梅花4='0x14,', 梅花5='0x15,', 梅花6='0x16,', 梅花7='0x17,', 梅花8='0x18,', 梅花9='0x19,', 梅花10='0x1A,', 梅花J='0x1B,',
-                梅花Q='0x1C,', 梅花K='0x1D,', 红桃A='0x21,', 红桃2='0x22,', 红桃3='0x23,', 红桃4='0x24,', 红桃5='0x25,', 红桃6='0x26,',
-                红桃7='0x27,', 红桃8='0x28,', 红桃9='0x29,', 红桃10='0x2A,', 红桃J='0x2B,', 红桃Q='0x2C,', 红桃K='0x2D,', 黑桃A='0x31,',
-                黑桃2='0x32,', 黑桃3='0x33,', 黑桃4='0x34,', 黑桃5='0x35,', 黑桃6='0x36,', 黑桃7='0x37,', 黑桃8='0x38,', 黑桃9='0x39,',
-                黑桃10='0x3A,', 黑桃J='0x3B,', 黑桃Q='0x3C,', 黑桃K='0x3D,', 小王='0x4E,', 大王='0x4F,')
+dict_ddz = dict(方块A='0x01', 方块2='0x02', 方块3='0x03', 方块4='0x04', 方块5='0x05', 方块6='0x06', 方块7='0x07', 方块8='0x08',
+                方块9='0x09', 方块10='0x0A', 方块J='0x0B', 方块Q='0x0C', 方块K='0x0D', 梅花A='0x11', 梅花2='0x12', 梅花3='0x13',
+                梅花4='0x14', 梅花5='0x15', 梅花6='0x16', 梅花7='0x17', 梅花8='0x18', 梅花9='0x19', 梅花10='0x1A', 梅花J='0x1B',
+                梅花Q='0x1C', 梅花K='0x1D', 红桃A='0x21', 红桃2='0x22', 红桃3='0x23', 红桃4='0x24', 红桃5='0x25', 红桃6='0x26',
+                红桃7='0x27', 红桃8='0x28', 红桃9='0x29', 红桃10='0x2A', 红桃J='0x2B', 红桃Q='0x2C', 红桃K='0x2D', 黑桃A='0x31',
+                黑桃2='0x32', 黑桃3='0x33', 黑桃4='0x34', 黑桃5='0x35', 黑桃6='0x36', 黑桃7='0x37', 黑桃8='0x38', 黑桃9='0x39',
+                黑桃10='0x3A', 黑桃J='0x3B', 黑桃Q='0x3C', 黑桃K='0x3D', 小王='0x4E', 大王='0x4F')
 # 取出所有的key
 name_list = dict_maj.keys()
 player = ''
@@ -78,13 +78,18 @@ def maj_extends():
         if request.form['Submit_Button'] == '确认发送':
             if len(player) > 1000:
                 player = ''
-            card_list = ''.join(dict_maj[i] for i in request.form['Card_Name'][:-1].split(',') if i != '')
+            card_str = request.form['Card_Name']
+            card_list = card_str[:-1].split(',')
+            card_ID = []
+            for i in card_list:
+                if i != '':
+                    card_ID.append(dict_maj[i])
+            # card_list = ''.join(dict_maj[i] for i in request.form['Card_Name'][:-1].split(',') if i != '')
             user_id = str(request.form['User_Id_Data'])
             server_url = str(request.form['Server_Url_Data'])
-            get_url = server_url + '?user_id=' + user_id + '&maj=' + card_list[:-1]
+            # get_url = server_url + '?user_id=' + user_id + '&maj=' + card_list[:-1]
             a = '游戏ID->'+user_id+'：' + request.form['Card_Name'] + '\n'
             player += a
-            print(get_url)
             statis_card_number = {}
             card_max_number = 0
             for i in request.form['Card_Name'][:-1].split(','):
@@ -100,7 +105,9 @@ def maj_extends():
                 return render_template('maj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
             else:
                 try:
-                    res = requests.get(get_url)
+                    card_data = {'gameId': "600102", 'usersCards': [{'userId': user_id, 'cards': card_ID}]}
+                    # res = requests.get(get_url)
+                    res = requests.post(server_url, json=card_data)
                     print(res.text)
                     return render_template('maj_extends.html', Tips=res.text, User_id=user_id, Player=player)
                 except:
@@ -167,26 +174,30 @@ def doudz_extends():
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             card_str = request.form['CardName_doudz']
-            print(card_str)
             card_list = card_str[:-1].split(',')
-            print(card_list)
-            card_ID = ''.join(dict_ddz[i] for i in card_list if i != '')
+            card_ID = []
+            for i in card_list:
+                if i != '':
+                    card_ID.append(dict_ddz[i])
+            # card_ID.append(dict_ddz[i] for i in card_list if i != '')
+            # card_ID = ''.join(dict_ddz[i] for i in card_list if i != '')
             gameID = str(request.form['User_Id_Data'])
             url = str(request.form['Server_Url_Data'])
-            print(len(card_ID))
             if len(card_ID) == 0:
                 return render_template('doudz_extends.html', Tips='配牌不能为空！', User_id=gameID, Server_url=url)
             elif len(set(card_list)) != len(card_list):
                 return render_template('doudz_extends.html', Tips='每张牌只支持配置1次，请检查配置！', User_id=gameID, Server_url=url)
-            elif len(card_ID) != 85:
+            elif len(card_ID) != 17:
                 return render_template('doudz_extends.html', Tips='请配置17张牌！', User_id=gameID, Server_url=url)
             elif gameID.isdigit() is False:
                 return render_template('doudz_extends.html', Tips='请输入正确的游戏ID！', User_id=gameID, Server_url=url)
             else:
                 try:
-                    res = requests.get(url + '?user_id=' + gameID + '&doudizhu=' + card_ID[:-1], timeout=(3, 3))
-                    print(url + '?user_id=' + gameID + '&doudizhu=' + card_ID[:-1])
-                    # print('{}?user_id={}&doudizhu={}'.format(url, gameID, card_ID[:-1]))
+                    card_data = {'gameId': "600101", 'usersCards': [{'userId': gameID, 'cards': card_ID}]}
+                    # res = requests.get(url + '?user_id=' + gameID + '&doudizhu=' + card_ID[:-1], timeout=(3, 3))
+                    res = requests.post(url, json=card_data)
+                    print(url, card_data)
+                    print(res)
                     return render_template('doudz_extends.html', Tips=res.text, User_id=gameID, Server_url=url)
                 except:
                     return render_template('doudz_extends.html', Tips='请检查游戏ID或者是否连接到内网！', User_id=gameID, Server_url=url)
