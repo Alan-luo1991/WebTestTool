@@ -203,6 +203,7 @@
             <div style="padding-top: 10px; padding-left: 60px;">
                 <h1 style="margin-left: 310px">配牌区域</h1>
                 <input id="CardName_doudz" type="text" name="CardName_doudz" style="width: 780px; height: 50px;"><br>
+                <input id="hexadecimal" type="text" name="hexadecimal" style="width: 780px; height: 50px;"><br>
                 <script type="text/javascript">
                 var card_dict = {'0x01': '方块A', '0x02': '方块2', '0x03': '方块3', '0x04': '方块4', '0x05': '方块5', '0x06': '方块6',
                 '0x07': '方块7', '0x08': '方块8', '0x09': '方块9', '0x0A': '方块10', '0x0B': '方块J', '0x0C': '方块Q',
@@ -215,7 +216,6 @@
                 '0x3A': '黑桃10', '0x3B': '黑桃J', '0x3C': '黑桃Q', '0x3D': '黑桃K', '0x4E': '小王', '0x4F': '大王'}
                 let button_num = 1;
                 for (var i in card_dict) {
-                    console.log(i);
                     var button;
                     button = "<input type='button' name='name_doudz' onclick='CardList(" + i + ")' style='width: 60px; max-height: 200px' value=" + card_dict[i] +">";
                     if (button_num % 13 == 0){
@@ -231,9 +231,9 @@
                     else {
                         b = '0x' + i.toString(16).toUpperCase();
                     }
-                    console.log(b);
                     a = document.getElementById("CardName_doudz");
                     a.value += card_dict[b] + ',';
+                    console.log(document.getElementById("hexadecimal").value += b + ',');
                 }
                 </script>
             </div>
