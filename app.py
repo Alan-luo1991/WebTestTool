@@ -21,16 +21,12 @@ import xlrd
 import os
 import svn.remote
 import pymongo
+import data_function
+import maj_function
 
 
 # 实例化，可视为固定格式
 app = Flask(__name__)
-
-
-dict_maj = dict(一万='11', 二万='12', 三万='13', 四万='14', 五万='15', 六万='16', 七万='17', 八万='18', 九万='19',
-                一筒='21', 二筒='22', 三筒='23', 四筒='24', 五筒='25', 六筒='26', 七筒='27', 八筒='28', 九筒='29',
-                一条='31', 二条='32', 三条='33', 四条='34', 五条='35', 六条='36', 七条='37', 八条='38', 九条='39',)
-
 
 dict_ddz = dict(方块A='0x01', 方块2='0x02', 方块3='0x03', 方块4='0x04', 方块5='0x05', 方块6='0x06', 方块7='0x07', 方块8='0x08',
                 方块9='0x09', 方块10='0x0A', 方块J='0x0B', 方块Q='0x0C', 方块K='0x0D', 梅花A='0x11', 梅花2='0x12', 梅花3='0x13',
@@ -39,9 +35,6 @@ dict_ddz = dict(方块A='0x01', 方块2='0x02', 方块3='0x03', 方块4='0x04', 
                 红桃7='0x27', 红桃8='0x28', 红桃9='0x29', 红桃10='0x2A', 红桃J='0x2B', 红桃Q='0x2C', 红桃K='0x2D', 黑桃A='0x31',
                 黑桃2='0x32', 黑桃3='0x33', 黑桃4='0x34', 黑桃5='0x35', 黑桃6='0x36', 黑桃7='0x37', 黑桃8='0x38', 黑桃9='0x39',
                 黑桃10='0x3A', 黑桃J='0x3B', 黑桃Q='0x3C', 黑桃K='0x3D', 小王='0x4E', 大王='0x4F')
-# 取出所有的key
-name_list = dict_maj.keys()
-player = ''
 
 
 def con_mysql(sql):
@@ -75,114 +68,18 @@ def homepage():
 def maj_extends():
     global player
     if request.method == 'GET':
-        myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
-        mydb = myclient['wanke']
-        mycol = mydb['gamekind']
-        Primary = mycol.find_one({'gameType': 117, 'name': '初级场'}, {'_id': 0, 'enableRobot': 1})
-        Intermediate = mycol.find_one({'gameType': 117, 'name': '中级场'}, {'_id': 0, 'enableRobot': 1})
-        Senior = mycol.find_one({'gameType': 117, 'name': '高级场'}, {'_id': 0, 'enableRobot': 1})
-        Master = mycol.find_one({'gameType': 117, 'name': '大师场'}, {'_id': 0, 'enableRobot': 1})
-        return render_template('maj_extends.html', Primary=Primary['enableRobot'], Intermediate=Intermediate['enableRobot'], Senior=Senior['enableRobot'], Master=Master['enableRobot'])
+        return render_template('maj_extends.html', fieldresult=data_function.refieldinfo())
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
-            if len(player) > 1000:
-                player = ''
-            card_str = request.form['Card_Name']
-            card_list = card_str[:-1].split(',')
-            card_ID = []
-            for i in card_list:
-                if i != '':
-                    card_ID.append(dict_maj[i])
-            # card_list = ''.join(dict_maj[i] for i in request.form['Card_Name'][:-1].split(',') if i != '')
-            user_id = str(request.form['User_Id_Data'])
-            server_url = str(request.form['Server_Url_Data'])
-            # get_url = server_url + '?user_id=' + user_id + '&maj=' + card_list[:-1]
-            a = '游戏ID->'+user_id+'：' + request.form['Card_Name'] + '\n'
-            player += a
-            statis_card_number = {}
-            card_max_number = 0
-            for i in request.form['Card_Name'][:-1].split(','):
-                statis_card_number[i] = request.form['Card_Name'][:-1].split(',').count(i)
-            for key, value in statis_card_number.items():
-                if value > card_max_number:
-                    card_max_number = value
-            if card_list == '':
-                return render_template('maj_extends.html', Tips='配牌不能为空！', User_id=user_id)
-            elif card_max_number > 4:
-                return render_template('maj_extends.html', Tips='相同牌不能超过4张！', User_id=user_id)
-            elif user_id.isdigit() is False:
-                return render_template('maj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
-            else:
-                try:
-                    card_data = {'gameId': "600102", 'usersCards': [{'userId': user_id, 'cards': card_ID}]}
-                    # res = requests.get(get_url)
-                    res = requests.post(server_url, json=card_data)
-                    print(server_url, card_data)
-                    return render_template('maj_extends.html', Tips=res.text, User_id=user_id, Player=player)
-                except:
-                    pass
+            return maj_function.deploycard()
         if request.form['Submit_Button'] == '换三张':
-            try:
-                change_num = int(request.form['Change_Three_Card_Data'])
-                print(change_num)
-                db = pymysql.connect('10.0.0.32', 'root', '123456', 'game', 3306)
-                cursor = db.cursor()
-                sql = 'UPDATE xuezhandaodi SET exchange={} WHERE id between 1 and 5'.format(change_num)
-                cursor.execute(sql)
-                db.commit()
-                db.close()
-                return render_template('maj_extends.html', Tips='写入成功')
-            except:
-                return render_template('maj_extends.html', Tips='无法连接到数据库，请联系管理员！')
+            return maj_function.changecard()
         if request.form['Submit_Button'] == '修改金币':
-            gameID = str(request.form['User_Id_Data'])
-            try:
-                print(gameID)
-                jb_num = request.form['Gold_Number_Data']
-                print(jb_num)
-                db = pymysql.connect('10.0.0.32', 'root', '123456', 'game', 3306)
-                cursor = db.cursor()
-                sql = 'UPDATE user_info SET balance={} WHERE user_id={}'.format(jb_num, gameID)
-                cursor.execute(sql)
-                db.commit()
-                db.close()
-                return render_template('maj_extends.html', Tips='修改金币成功', User_id=gameID)
-            except:
-                return render_template('maj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
+            return maj_function.updatagold()
         if request.form['Submit_Button'] == '拿牌':
-            cardpool_url = 'http://10.0.0.32:8802/user/mjAppointTakeCard'
-            gameID = request.form['User_Id_Data']
-            card_key = request.form['Next_Card_Data'][:-1]
-            print(card_key)
-            if (card_key in name_list) is False:
-                return render_template('maj_extends.html', Tips='请检查配置麻将牌是否正确', User_id=gameID)
-            elif len(gameID) == 0:
-                return render_template('maj_extends.html', Tips='请输入正确的游戏ID', User_id=gameID)
-            else:
-                card = dict_maj[card_key]
-                data = {'UserId': int(gameID), 'Mj': int(card[:-1])}
-                req = requests.post(cardpool_url, json=data)
-                if len(req.text) == len('eyJjb2RlIjoyMDAsIm1lc3NhZ2UiOiIiLCJkYXRhIjpudWxsfQ==') + 2:
-                    return render_template('maj_extends.html', Tips='配牌成功', User_id=gameID)
-                else:
-                    return render_template('maj_extends.html', Tips='配牌成功！', User_id=gameID)
+            return maj_function.nextcard()
         if request.form['Submit_Button'] == '确定修改':
-            switch_maj = request.form['r']
-            game_site = request.form['game_site']
-            myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
-            mydb = myclient['wanke']
-            mycol = mydb['gamekind']
-            myquery = {'gameType': 117, 'name': game_site}
-            if switch_maj == 'open':
-                newvalue = {'$set': {'enableRobot': bool(2 > 1)}}
-                mycol.update_many(myquery, newvalue)
-                requests.get('http://10.0.0.204:30016/user/updategame')
-                return render_template('maj_extends.html', Tips=game_site+'-->机器人已打开，现在能够匹配到机器人了')
-            if switch_maj == 'close':
-                newvalue = {'$set': {'enableRobot': bool(1 > 2)}}
-                mycol.update_many(myquery, newvalue)
-                requests.get('http://10.0.0.204:30016/user/updategame')
-                return render_template('maj_extends.html', Tips=game_site+'-->机器人已关闭，现在无法匹配到机器人了')
+            return maj_function.ipswitch()
     return render_template('maj_extends.html')
 
 
