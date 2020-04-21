@@ -74,6 +74,15 @@ def homepage():
 @app.route('/maj_extends.html', methods=['GET', 'POST'])
 def maj_extends():
     global player
+    if request.method == 'GET':
+        myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
+        mydb = myclient['wanke']
+        mycol = mydb['gamekind']
+        Primary = mycol.find_one({'gameType': 117, 'name': '初级场'}, {'_id': 0, 'enableRobot': 1})
+        Intermediate = mycol.find_one({'gameType': 117, 'name': '中级场'}, {'_id': 0, 'enableRobot': 1})
+        Senior = mycol.find_one({'gameType': 117, 'name': '高级场'}, {'_id': 0, 'enableRobot': 1})
+        Master = mycol.find_one({'gameType': 117, 'name': '大师场'}, {'_id': 0, 'enableRobot': 1})
+        return render_template('maj_extends.html', Primary=Primary['enableRobot'], Intermediate=Intermediate['enableRobot'], Senior=Senior['enableRobot'], Master=Master['enableRobot'])
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             if len(player) > 1000:
