@@ -159,20 +159,21 @@ def maj_extends():
                     return render_template('maj_extends.html', Tips='配牌成功！', User_id=gameID)
         if request.form['Submit_Button'] == '确定修改':
             switch_maj = request.form['r']
+            game_site = request.form['game_site']
             myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
             mydb = myclient['wanke']
             mycol = mydb['gamekind']
-            myquery = {'gameType': 117}
+            myquery = {'gameType': 117, 'name': game_site}
             if switch_maj == 'open':
                 newvalue = {'$set': {'enableRobot': bool(2 > 1)}}
                 mycol.update_many(myquery, newvalue)
                 requests.get('http://10.0.0.204:30016/user/updategame')
-                return render_template('maj_extends.html', Tips='机器人已打开，现在能够匹配到机器人了')
+                return render_template('maj_extends.html', Tips=game_site+'-->机器人已打开，现在能够匹配到机器人了')
             if switch_maj == 'close':
                 newvalue = {'$set': {'enableRobot': bool(1 > 2)}}
                 mycol.update_many(myquery, newvalue)
                 requests.get('http://10.0.0.204:30016/user/updategame')
-                return render_template('maj_extends.html', Tips='机器人已关闭，现在无法匹配到机器人了')
+                return render_template('maj_extends.html', Tips=game_site+'-->机器人已关闭，现在无法匹配到机器人了')
     return render_template('maj_extends.html')
 
 
