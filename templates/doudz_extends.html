@@ -235,6 +235,13 @@
                 }
                 </script>
             </div>
+            <label for="UserIdData" style="margin-left: 60px; margin-top: 20px">游戏类型：</label>
+            <label class="lyear-radio radio-inline radio-primary">
+                    <input type="radio" name="gamename" value="600103" checked="checked"><span>疯狂斗地主</span>
+            </label>
+            <label class="lyear-radio radio-inline radio-primary">
+                    <input type="radio" name="gamename" value="600101"><span>欢乐斗地主</span>
+            </label><br>
             <label for="UserIdData" style="margin-left: 60px; margin-top: 20px">游戏ID：</label>
             <input id="UserIdData" type="text" name="User_Id_Data"  value="{{ User_id }}" style="width: 200px">
             <input id="SendCardData" type="submit" name="Submit_Button" onclick="Server_Url()" value="确认发送" style="width: 80px; height: 30px; margin-left: 435px;"><br>

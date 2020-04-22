@@ -97,6 +97,7 @@ def doudz_extends():
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             card_str = request.form['CardName_doudz']
+            game_name = str(request.form['gamename'])
             card_list = card_str[:-1].split(',')
             card_ID = []
             for i in card_list:
@@ -116,7 +117,7 @@ def doudz_extends():
                 return render_template('doudz_extends.html', Tips='请输入正确的游戏ID！', User_id=gameID, Server_url=url)
             else:
                 try:
-                    card_data = {'gameId': "600101", 'usersCards': [{'userId': gameID, 'cards': card_ID}]}
+                    card_data = {'gameId': game_name, 'usersCards': [{'userId': gameID, 'cards': card_ID}]}
                     # res = requests.get(url + '?user_id=' + gameID + '&doudizhu=' + card_ID[:-1], timeout=(3, 3))
                     res = requests.post(url, json=card_data)
                     print(url, card_data)
