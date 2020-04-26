@@ -23,6 +23,7 @@ import svn.remote
 import pymongo
 import data_function
 import maj_function
+import public_function
 
 
 # 实例化，可视为固定格式
@@ -52,6 +53,11 @@ def openxl(fileurl):
     return tablename
 
 
+@app.route("/", methods=['GET', 'POST'])
+def main():
+    return render_template('homepage.html')
+
+
 # route()方法用于设定路由；类似spring路由配置
 @app.route('/login.html', methods=['GET', 'POST'])
 def hello_world():
@@ -64,36 +70,35 @@ def homepage():
     return render_template('homepage.html')
 
 
-@app.route('/maj_extends.html', methods=['GET', 'POST'])
-def maj_extends():
+@app.route('/XZmaj_extends.html', methods=['GET', 'POST'])
+def XZmaj_extends():
     global player
     if request.method == 'GET':
-        return render_template('maj_extends.html', fieldresult=data_function.refieldinfo())
+        return render_template('XZmaj_extends.html', fieldresult=data_function.gamesiteinfo(117), IPresult=public_function.Ipstate(117))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             return maj_function.deploycard()
         if request.form['Submit_Button'] == '换三张':
             return maj_function.changecard()
         if request.form['Submit_Button'] == '修改金币':
-            return maj_function.updatagold()
+            gameID = str(request.form['User_Id_Data'])
+            jb_num = request.form['Gold_Number_Data']
+            try:
+                data_function.updatagold(gameID, jb_num)
+                return render_template('XZmaj_extends.html', Tips='修改金币成功', User_id=gameID)
+            except:
+                return render_template('XZmaj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
         if request.form['Submit_Button'] == '拿牌':
             return maj_function.nextcard()
         if request.form['Submit_Button'] == '确定修改':
-            return maj_function.ipswitch()
-    return render_template('maj_extends.html')
+            return public_function.Robotswitch(117)
+    return render_template('XZmaj_extends.html')
 
 
-@app.route('/doudz_extends.html', methods=['GET', 'POST'])
-def doudz_extends():
+@app.route('/HLdoudz_extends.html', methods=['GET', 'POST'])
+def HLdoudz_extends():
     if request.method == 'GET':
-        myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
-        mydb = myclient['wanke']
-        mycol = mydb['gamekind']
-        result = mycol.find_one({'gameType': 100, 'enabled': bool(2 > 1)}, {'_id': 0, 'matchIp': 1})
-        if result['matchIp'] is False:
-            return render_template('doudz_extends.html', IPresult='已关闭')
-        if result['matchIp'] is True:
-            return render_template('doudz_extends.html', IPresult='已打开')
+        return render_template('HLdoudz_extends.html', IPresult=public_function.Ipstate(100))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             card_str = request.form['CardName_doudz']
@@ -108,13 +113,13 @@ def doudz_extends():
             gameID = str(request.form['User_Id_Data'])
             url = str(request.form['Server_Url_Data'])
             if len(card_ID) == 0:
-                return render_template('doudz_extends.html', Tips='配牌不能为空！', User_id=gameID, Server_url=url)
+                return render_template('HLdoudz_extends.html', Tips='配牌不能为空！', User_id=gameID, Server_url=url)
             elif len(set(card_list)) != len(card_list):
-                return render_template('doudz_extends.html', Tips='每张牌只支持配置1次，请检查配置！', User_id=gameID, Server_url=url)
+                return render_template('HLdoudz_extends.html', Tips='每张牌只支持配置1次，请检查配置！', User_id=gameID, Server_url=url)
             elif len(card_ID) != 17:
-                return render_template('doudz_extends.html', Tips='请配置17张牌！', User_id=gameID, Server_url=url)
+                return render_template('HLdoudz_extends.html', Tips='请配置17张牌！', User_id=gameID, Server_url=url)
             elif gameID.isdigit() is False:
-                return render_template('doudz_extends.html', Tips='请输入正确的游戏ID！', User_id=gameID, Server_url=url)
+                return render_template('HLdoudz_extends.html', Tips='请输入正确的游戏ID！', User_id=gameID, Server_url=url)
             else:
                 try:
                     card_data = {'gameId': game_name, 'usersCards': [{'userId': gameID, 'cards': card_ID}]}
@@ -122,26 +127,19 @@ def doudz_extends():
                     res = requests.post(url, json=card_data)
                     print(url, card_data)
                     print(res)
-                    return render_template('doudz_extends.html', Tips=res.text, User_id=gameID, Server_url=url)
+                    return render_template('HLdoudz_extends.html', Tips=res.text, User_id=gameID, Server_url=url)
                 except:
-                    return render_template('doudz_extends.html', Tips='请检查游戏ID或者是否连接到内网！', User_id=gameID, Server_url=url)
+                    return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网！', User_id=gameID, Server_url=url)
         if request.form['Submit_Button'] == '修改金币':
             gameID = str(request.form['User_Id_Data'])
+            jb_num = request.form['Gold_Number_Data']
             try:
-                print(gameID)
-                jb_num = request.form['Gold_Number_Data']
-                print(jb_num)
-                db = pymysql.connect('10.0.0.32', 'root', '123456', 'game', 3306)
-                cursor = db.cursor()
-                sql = 'UPDATE user_info SET balance={} WHERE user_id={}'.format(jb_num, gameID)
-                cursor.execute(sql)
-                db.commit()
-                db.close()
-                return render_template('doudz_extends.html', Tips='修改金币成功', User_id=gameID)
+                data_function.updatagold(gameID, jb_num)
+                return render_template('HLdoudz_extends.html', Tips='修改金币成功', User_id=gameID)
             except:
-                return render_template('doudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
+                return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
         if request.form['Submit_Button'] == '重新加载':
-            switch = request.form['e']
+            switch = request.form['ip']
             myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
             mydb = myclient['wanke']
             mycol = mydb['gamekind']
@@ -150,22 +148,22 @@ def doudz_extends():
                 newvalue = {'$set': {'matchIp': bool(2 > 1)}}
                 mycol.update_many(myquery, newvalue)
                 requests.get('http://10.0.0.204:30016/user/updategame')
-                return render_template('doudz_extends.html', Tips='IP限制已打开，相同IP无法匹配成功')
+                return render_template('HLdoudz_extends.html', Tips='IP限制已打开，相同IP无法匹配成功')
             if switch == 'close':
                 newvalue = {'$set': {'matchIp': bool(1 > 2)}}
                 mycol.update_many(myquery, newvalue)
                 requests.get('http://10.0.0.204:30016/user/updategame')
-                return render_template('doudz_extends.html', Tips='IP限制已关闭，相同IP可以匹配了')
-    return render_template('doudz_extends.html')
+                return render_template('HLdoudz_extends.html', Tips='IP限制已关闭，相同IP可以匹配了')
+    return render_template('HLdoudz_extends.html')
 
 
-@app.route('/maj_TestCoverage.html', methods=['GET', 'POST'])
-def maj_TestCoverage():
+@app.route('/XZmaj_TestCoverage.html', methods=['GET', 'POST'])
+def XZmaj_TestCoverage():
     latesttime = ''
     if request.method == 'GET':
         if os.path.exists('/home/test/WebTestTool/xuezhandaodi.out') is True:
             latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
-            return render_template('maj_TestCoverage.html', LatestTime=latesttime)
+            return render_template('XZmaj_TestCoverage.html', LatestTime=latesttime)
     if request.method == 'POST':
         if request.form['Submit_Button'] == '下载日志':
             try:
@@ -175,9 +173,9 @@ def maj_TestCoverage():
                 sftp.get('/tmp/xuezhandaodi.out', '/home/test/WebTestTool/xuezhandaodi.out')
                 latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
                 ser_url.close()
-                return render_template('maj_TestCoverage.html', Tips='下载成功', LatestTime=latesttime)
+                return render_template('XZmaj_TestCoverage.html', Tips='下载成功', LatestTime=latesttime)
             except:
-                return render_template('maj_TestCoverage.html', Tips='下载失败')
+                return render_template('XZmaj_TestCoverage.html', Tips='下载失败')
         if request.form['Submit_Button'] == '查看按钮':
             if os.path.exists('/home/test/WebTestTool/xuezhandaodi.out') is True:
                 latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/xuezhandaodi.out'))
@@ -215,17 +213,17 @@ def maj_TestCoverage():
                             test_result2 += ''.join('牌型{}：{}  未覆盖\n'.format(cardindex, cardtype[cardtypeid]))
                         a = 0
                         cardindex += 1
-                    return render_template('maj_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
-    return render_template('maj_TestCoverage.html')
+                    return render_template('XZmaj_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
+    return render_template('XZmaj_TestCoverage.html')
 
 
-@app.route('/doudz_TestCoverage.html', methods=['GET', 'POST'])
-def doudz_TestCoverage():
+@app.route('/HLdoudz_TestCoverage.html', methods=['GET', 'POST'])
+def HLdoudz_TestCoverage():
     latesttime = ''
     if request.method == 'GET':
         if os.path.exists('/home/test/WebTestTool/stdout') is True:
             latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/stdout'))
-            return render_template('doudz_TestCoverage.html', LatestTime=latesttime)
+            return render_template('HLdoudz_TestCoverage.html', LatestTime=latesttime)
     if request.method == 'POST':
         if request.form['Submit_Button'] == '下载日志':
             try:
@@ -236,9 +234,9 @@ def doudz_TestCoverage():
                 sftp.get('/tmp/stdout', '/home/test/WebTestTool/stdout')
                 latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/stdout'))
                 ser_url.close()
-                return render_template('doudz_TestCoverage.html', Tips='下载成功', LatestTime=latesttime)
+                return render_template('HLdoudz_TestCoverage.html', Tips='下载成功', LatestTime=latesttime)
             except:
-                return render_template('doudz_TestCoverage.html', Tips='下载失败')
+                return render_template('HLdoudz_TestCoverage.html', Tips='下载失败')
         if request.form['Submit_Button'] == '查看按钮':
             if os.path.exists('/home/test//WebTestTool/stdout') is True:
                 latesttime = time.ctime(os.path.getmtime('/home/test/WebTestTool/stdout'))
@@ -270,8 +268,8 @@ def doudz_TestCoverage():
                             test_result2 += ''.join('牌型{}：{}  未覆盖\n'.format(cardindex, cardtype[cardtypeid]))
                         a = 0
                         cardindex += 1
-                    return render_template('doudz_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
-    return render_template('doudz_TestCoverage.html')
+                    return render_template('HLdoudz_TestCoverage.html', TestResult1=test_result1, TestResult2=test_result2, Time=timedata, LatestTime=latesttime)
+    return render_template('HLdoudz_TestCoverage.html')
 
 
 @app.route('/checkconfig.html', methods=['GET', 'POST'])
@@ -308,20 +306,6 @@ def checkconfig():
                 return render_template('checkconfig.html', CheckResult='恭喜！本次数据表检查没有发现差异！')
             return render_template('checkconfig.html', CheckResult=checkresult)
     return render_template('checkconfig.html')
-
-
-# @app.route('/testcase.html', methods=['GET', 'POST'])
-# def testcase():
-#     csv = open(r'E:\MyTest\测试用例\血战麻将测试用例V2.0-定稿.csv')
-#     case = pd.read_csv(csv)
-#     case = case.pd.DataFrame.head(5)
-#     test1 = '和实话实说'
-#     print(case)
-#     return render_template('testcase.html', Case=case, Test1=test1)
-
-# @app.route('prototest.html', methods=['GET', 'POST'])
-# def peotorest():
-#     protocol_client.protocol_client.loginhall()
 
 
 if __name__ == '__main__':

@@ -12,6 +12,7 @@
 from flask import Flask
 import pymongo
 import pymysql
+from flask import request
 
 from flask import render_template
 
@@ -32,10 +33,19 @@ def con_mongo():
     return mycol
 
 
-def refieldinfo():
-    Primary = con_mongo().find_one({'gameType': 117, 'name': '初级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
-    Intermediate = con_mongo().find_one({'gameType': 117, 'name': '中级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
-    Senior = con_mongo().find_one({'gameType': 117, 'name': '高级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
-    Master = con_mongo().find_one({'gameType': 117, 'name': '大师场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
+def gamesiteinfo(gameType):
+    Primary = con_mongo().find_one({'gameType': gameType, 'name': '初级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
+    Intermediate = con_mongo().find_one({'gameType': gameType, 'name': '中级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
+    Senior = con_mongo().find_one({'gameType': gameType, 'name': '高级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
+    Master = con_mongo().find_one({'gameType': gameType, 'name': '大师场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
     fieldresult = ['初级场：'+str(Primary), '中级场：'+str(Intermediate), '高级场：'+str(Senior), '大师场'+str(Master)]
     return fieldresult
+
+
+def updatagold(gameID, jb_num):
+        db = pymysql.connect('10.0.0.32', 'root', '123456', 'game', 3306)
+        cursor = db.cursor()
+        sql = 'UPDATE user_info SET balance={} WHERE user_id={}'.format(jb_num, gameID)
+        cursor.execute(sql)
+        db.commit()
+        db.close()

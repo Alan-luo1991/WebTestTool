@@ -49,18 +49,17 @@ def deploycard():
         if value > card_max_number:
             card_max_number = value
     if card_list == '':
-        return render_template('maj_extends.html', Tips='配牌不能为空！', User_id=user_id)
+        return render_template('XZmaj_extends.html', Tips='配牌不能为空！', User_id=user_id)
     elif card_max_number > 4:
-        return render_template('maj_extends.html', Tips='相同牌不能超过4张！', User_id=user_id)
+        return render_template('XZmaj_extends.html', Tips='相同牌不能超过4张！', User_id=user_id)
     elif user_id.isdigit() is False:
-        return render_template('maj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
+        return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
     else:
         try:
             card_data = {'gameId': "600102", 'usersCards': [{'userId': user_id, 'cards': card_ID}]}
-            # res = requests.get(get_url)
             res = requests.post(server_url, json=card_data)
             print(server_url, card_data)
-            return render_template('maj_extends.html', Tips=res.text, User_id=user_id, Player=player)
+            return render_template('XZmaj_extends.html', Tips=res.text, User_id=user_id, Player=player)
         except:
             pass
 
@@ -68,33 +67,12 @@ def deploycard():
 def changecard():
     try:
         change_num = int(request.form['Change_Three_Card_Data'])
-        print(change_num)
-        db = pymysql.connect('10.0.0.32', 'root', '123456', 'game', 3306)
-        cursor = db.cursor()
-        sql = 'UPDATE xuezhandaodi SET exchange={} WHERE id between 1 and 5'.format(change_num)
-        cursor.execute(sql)
-        db.commit()
-        db.close()
-        return render_template('maj_extends.html', Tips='写入成功')
+        server_url = 'http://10.0.0.32:8080/game/setXzddExchange'
+        data = {"exchange": change_num}
+        res = requests.post(server_url, json=data)
+        return render_template('XZmaj_extends.html', Tips=res.text)
     except:
-        return render_template('maj_extends.html', Tips='无法连接到数据库，请联系管理员！')
-
-
-def updatagold():
-    gameID = str(request.form['User_Id_Data'])
-    try:
-        print(gameID)
-        jb_num = request.form['Gold_Number_Data']
-        print(jb_num)
-        db = pymysql.connect('10.0.0.32', 'root', '123456', 'game', 3306)
-        cursor = db.cursor()
-        sql = 'UPDATE user_info SET balance={} WHERE user_id={}'.format(jb_num, gameID)
-        cursor.execute(sql)
-        db.commit()
-        db.close()
-        return render_template('maj_extends.html', Tips='修改金币成功', User_id=gameID)
-    except:
-        return render_template('maj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
+        return render_template('XZmaj_extends.html', Tips='无法连接到数据库，请联系管理员！')
 
 
 def nextcard():
@@ -103,35 +81,14 @@ def nextcard():
     card_key = request.form['Next_Card_Data'][:-1]
     print(card_key)
     if (card_key in name_list) is False:
-        return render_template('maj_extends.html', Tips='请检查配置麻将牌是否正确', User_id=gameID)
+        return render_template('XZmaj_extends.html', Tips='请检查配置麻将牌是否正确', User_id=gameID)
     elif len(gameID) == 0:
-        return render_template('maj_extends.html', Tips='请输入正确的游戏ID', User_id=gameID)
+        return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID', User_id=gameID)
     else:
         card = dict_maj[card_key]
         data = {'UserId': int(gameID), 'Mj': int(card[:-1])}
         req = requests.post(cardpool_url, json=data)
         if len(req.text) == len('eyJjb2RlIjoyMDAsIm1lc3NhZ2UiOiIiLCJkYXRhIjpudWxsfQ==') + 2:
-            return render_template('maj_extends.html', Tips='配牌成功', User_id=gameID)
+            return render_template('XZmaj_extends.html', Tips='配牌成功', User_id=gameID)
         else:
-            return render_template('maj_extends.html', Tips='配牌成功！', User_id=gameID)
-
-
-def ipswitch():
-    switch_maj = request.form['r']
-    game_site = request.form['game_site']
-    myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
-    mydb = myclient['wanke']
-    mycol = mydb['gamekind']
-    myquery = {'gameType': 117, 'name': game_site}
-    if switch_maj == 'open':
-        newvalue = {'$set': {'enableRobot': bool(2 > 1)}}
-        mycol.update_many(myquery, newvalue)
-        requests.get('http://10.0.0.204:30016/user/updategame')
-        return render_template('maj_extends.html', Tips=game_site + '-->机器人已打开，现在能够匹配到机器人了',
-                               fieldresult=data_function.refieldinfo())
-    if switch_maj == 'close':
-        newvalue = {'$set': {'enableRobot': bool(1 > 2)}}
-        mycol.update_many(myquery, newvalue)
-        requests.get('http://10.0.0.204:30016/user/updategame')
-        return render_template('maj_extends.html', Tips=game_site + '-->机器人已关闭，现在无法匹配到机器人了',
-                               fieldresult=data_function.refieldinfo())
+            return render_template('XZmaj_extends.html', Tips='配牌成功！', User_id=gameID)
