@@ -68,7 +68,7 @@ def changecard():
     try:
         change_num = int(request.form['Change_Three_Card_Data'])
         server_url = 'http://10.0.0.32:8080/game/setXzddExchange'
-        data = {"exchange": change_num}
+        data = {"exchange": int(change_num)}
         res = requests.post(server_url, json=data)
         return render_template('XZmaj_extends.html', Tips=res.text)
     except:
