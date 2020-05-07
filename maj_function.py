@@ -13,6 +13,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 import requests
+import json
 import pymysql
 import pymongo
 import data_function
@@ -76,7 +77,7 @@ def changecard():
 
 
 def nextcard():
-    cardpool_url = 'http://10.0.0.32:8802/user/mjAppointTakeCard'
+    cardpool_url = 'http://10.0.0.32:8080/game/setXZDDNextCard'
     gameID = request.form['User_Id_Data']
     card_key = request.form['Next_Card_Data'][:-1]
     print(card_key)
@@ -86,9 +87,7 @@ def nextcard():
         return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID', User_id=gameID)
     else:
         card = dict_maj[card_key]
-        data = {'UserId': int(gameID), 'Mj': int(card[:-1])}
+        data = {'userId': gameID, 'card': card}
         req = requests.post(cardpool_url, json=data)
-        if len(req.text) == len('eyJjb2RlIjoyMDAsIm1lc3NhZ2UiOiIiLCJkYXRhIjpudWxsfQ==') + 2:
-            return render_template('XZmaj_extends.html', Tips='配牌成功', User_id=gameID)
-        else:
-            return render_template('XZmaj_extends.html', Tips='配牌成功！', User_id=gameID)
+        reqdata = json.loads(req.text)
+        return render_template('XZmaj_extends.html', Tips=reqdata["data"], User_id=gameID)
