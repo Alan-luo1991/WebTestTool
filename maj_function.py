@@ -27,6 +27,10 @@ name_list = dict_maj.keys()
 
 
 def deploycard():
+    """
+    发送配置到服务器
+    :return:
+    """
     global player
     if len(player) > 1000:
         player = ''
@@ -53,8 +57,8 @@ def deploycard():
         return render_template('XZmaj_extends.html', Tips='配牌不能为空！', User_id=user_id)
     elif card_max_number > 4:
         return render_template('XZmaj_extends.html', Tips='相同牌不能超过4张！', User_id=user_id)
-    elif user_id.isdigit() is False:
-        return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
+    # elif user_id.isdigit() is False:
+    #     return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
     else:
         try:
             card_data = {'gameId': "600102", 'usersCards': [{'userId': user_id, 'cards': card_ID}]}
@@ -66,6 +70,10 @@ def deploycard():
 
 
 def changecard():
+    """
+    发送换三张配置到服务器
+    :return:
+    """
     try:
         change_num = int(request.form['Change_Three_Card_Data'])
         server_url = 'http://10.0.0.32:8080/game/setXzddExchange'
@@ -77,6 +85,10 @@ def changecard():
 
 
 def nextcard():
+    """
+    发送下一张拿牌配置到服务器
+    :return:
+    """
     cardpool_url = 'http://10.0.0.32:8080/game/setXZDDNextCard'
     gameID = request.form['User_Id_Data']
     card_key = request.form['Next_Card_Data'][:-1]

@@ -24,27 +24,11 @@ import pymongo
 import data_function
 import maj_function
 import public_function
+import doudz_function
 
 
 # 实例化，可视为固定格式
 app = Flask(__name__)
-
-dict_ddz = dict(方块A='0x01', 方块2='0x02', 方块3='0x03', 方块4='0x04', 方块5='0x05', 方块6='0x06', 方块7='0x07', 方块8='0x08',
-                方块9='0x09', 方块10='0x0A', 方块J='0x0B', 方块Q='0x0C', 方块K='0x0D', 梅花A='0x11', 梅花2='0x12', 梅花3='0x13',
-                梅花4='0x14', 梅花5='0x15', 梅花6='0x16', 梅花7='0x17', 梅花8='0x18', 梅花9='0x19', 梅花10='0x1A', 梅花J='0x1B',
-                梅花Q='0x1C', 梅花K='0x1D', 红桃A='0x21', 红桃2='0x22', 红桃3='0x23', 红桃4='0x24', 红桃5='0x25', 红桃6='0x26',
-                红桃7='0x27', 红桃8='0x28', 红桃9='0x29', 红桃10='0x2A', 红桃J='0x2B', 红桃Q='0x2C', 红桃K='0x2D', 黑桃A='0x31',
-                黑桃2='0x32', 黑桃3='0x33', 黑桃4='0x34', 黑桃5='0x35', 黑桃6='0x36', 黑桃7='0x37', 黑桃8='0x38', 黑桃9='0x39',
-                黑桃10='0x3A', 黑桃J='0x3B', 黑桃Q='0x3C', 黑桃K='0x3D', 小王='0x4E', 大王='0x4F')
-
-
-def con_mysql(sql):
-    db = pymysql.connect('10.0.0.32', 'root', '123456', 'game', 3306)
-    cursor = db.cursor()
-    cursor.execute(sql)
-    db.commit()
-    db.close()
-    return cursor.fetchone()
 
 
 def openxl(fileurl):
@@ -81,13 +65,11 @@ def XZmaj_extends():
         if request.form['Submit_Button'] == '换三张':
             return maj_function.changecard()
         if request.form['Submit_Button'] == '修改金币':
-            gameID = str(request.form['User_Id_Data'])
-            jb_num = request.form['Gold_Number_Data']
             try:
-                data_function.updatagold(gameID, jb_num)
-                return render_template('XZmaj_extends.html', Tips='修改金币成功', User_id=gameID)
+                public_function.updatagold_mongo()
+                return render_template('HLdoudz_extends.html', Tips='修改金币成功', User_id=public_function.updatagold_mongo())
             except:
-                return render_template('XZmaj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
+                return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
         if request.form['Submit_Button'] == '拿牌':
             return maj_function.nextcard()
         if request.form['Submit_Button'] == '确定修改':
@@ -101,43 +83,13 @@ def HLdoudz_extends():
         return render_template('HLdoudz_extends.html', IPresult=public_function.Ipstate(100))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
-            card_str = request.form['CardName_doudz']
-            game_name = str(request.form['gamename'])
-            card_list = card_str[:-1].split(',')
-            card_ID = []
-            for i in card_list:
-                if i != '':
-                    card_ID.append(dict_ddz[i])
-            # card_ID.append(dict_ddz[i] for i in card_list if i != '')
-            # card_ID = ''.join(dict_ddz[i] for i in card_list if i != '')
-            gameID = str(request.form['User_Id_Data'])
-            url = str(request.form['Server_Url_Data'])
-            if len(card_ID) == 0:
-                return render_template('HLdoudz_extends.html', Tips='配牌不能为空！', User_id=gameID, Server_url=url)
-            elif len(set(card_list)) != len(card_list):
-                return render_template('HLdoudz_extends.html', Tips='每张牌只支持配置1次，请检查配置！', User_id=gameID, Server_url=url)
-            elif len(card_ID) != 17:
-                return render_template('HLdoudz_extends.html', Tips='请配置17张牌！', User_id=gameID, Server_url=url)
-            elif gameID.isdigit() is False:
-                return render_template('HLdoudz_extends.html', Tips='请输入正确的游戏ID！', User_id=gameID, Server_url=url)
-            else:
-                try:
-                    card_data = {'gameId': game_name, 'usersCards': [{'userId': gameID, 'cards': card_ID}]}
-                    # res = requests.get(url + '?user_id=' + gameID + '&doudizhu=' + card_ID[:-1], timeout=(3, 3))
-                    res = requests.post(url, json=card_data)
-                    print(url, card_data)
-                    print(res)
-                    return render_template('HLdoudz_extends.html', Tips=res.text, User_id=gameID, Server_url=url)
-                except:
-                    return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网！', User_id=gameID, Server_url=url)
+            return doudz_function.deploycard(str(600101))
         if request.form['Submit_Button'] == '修改金币':
-            gameID = str(request.form['User_Id_Data'])
-            jb_num = request.form['Gold_Number_Data']
             try:
-                data_function.updatagold(gameID, jb_num)
-                return render_template('HLdoudz_extends.html', Tips='修改金币成功', User_id=gameID)
+                public_function.updatagold_mongo()
+                return render_template('HLdoudz_extends.html', Tips='修改金币成功', User_id=public_function.updatagold_mongo())
             except:
-                return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=gameID)
+                return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
         if request.form['Submit_Button'] == '重新加载':
             switch = request.form['ip']
             myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
@@ -155,6 +107,38 @@ def HLdoudz_extends():
                 requests.get('http://10.0.0.204:30016/user/updategame')
                 return render_template('HLdoudz_extends.html', Tips='IP限制已关闭，相同IP可以匹配了')
     return render_template('HLdoudz_extends.html')
+
+
+@app.route('/FKdoudz_extends.html', methods=['GET', 'POST'])
+def FKdoudz_extends():
+    if request.method == 'GET':
+        return render_template('FKdoudz_extends.html', IPresult=public_function.Ipstate(100))
+    if request.method == 'POST':
+        if request.form['Submit_Button'] == '确认发送':
+            return doudz_function.deploycard(str(600103))
+        if request.form['Submit_Button'] == '修改金币':
+            try:
+                public_function.updatagold_mongo()
+                return render_template('HLdoudz_extends.html', Tips='修改金币成功', User_id=public_function.updatagold_mongo())
+            except:
+                return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
+        if request.form['Submit_Button'] == '重新加载':
+            switch = request.form['ip']
+            myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
+            mydb = myclient['wanke']
+            mycol = mydb['gamekind']
+            myquery = {'gameType': 100, 'enabled': bool(2 > 1)}
+            if switch == 'open':
+                newvalue = {'$set': {'matchIp': bool(2 > 1)}}
+                mycol.update_many(myquery, newvalue)
+                requests.get('http://10.0.0.204:30016/user/updategame')
+                return render_template('FKdoudz_extends.html', Tips='IP限制已打开，相同IP无法匹配成功')
+            if switch == 'close':
+                newvalue = {'$set': {'matchIp': bool(1 > 2)}}
+                mycol.update_many(myquery, newvalue)
+                requests.get('http://10.0.0.204:30016/user/updategame')
+                return render_template('FKdoudz_extends.html', Tips='IP限制已关闭，相同IP可以匹配了')
+    return render_template('FKdoudz_extends.html')
 
 
 @app.route('/XZmaj_TestCoverage.html', methods=['GET', 'POST'])
@@ -290,7 +274,7 @@ def checkconfig():
                 try:
                     for row in range(xl_rows):
                         sql = 'select * from {} where id={}'.format(filename[:-5], row+1)
-                        sql_result = con_mysql(sql)
+                        sql_result = data_function.con_mysql(sql)
                         sql_result = list(sql_result)
                         xl_result = sheet.row_values(row+4)
                         for i in range(len(xl_result)):
