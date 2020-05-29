@@ -67,9 +67,9 @@ def XZmaj_extends():
         if request.form['Submit_Button'] == '修改金币':
             try:
                 public_function.updatagold_mongo()
-                return render_template('HLdoudz_extends.html', Tips='修改金币成功', User_id=public_function.updatagold_mongo())
+                return render_template('XZmaj_extends.html', Tips='修改金币成功', User_id=public_function.updatagold_mongo())
             except:
-                return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
+                return render_template('XZmaj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
         if request.form['Submit_Button'] == '拿牌':
             return maj_function.nextcard()
         if request.form['Submit_Button'] == '确定修改':
@@ -119,9 +119,9 @@ def FKdoudz_extends():
         if request.form['Submit_Button'] == '修改金币':
             try:
                 public_function.updatagold_mongo()
-                return render_template('HLdoudz_extends.html', Tips='修改金币成功', User_id=public_function.updatagold_mongo())
+                return render_template('FKdoudz_extends.html', Tips='修改金币成功', User_id=public_function.updatagold_mongo())
             except:
-                return render_template('HLdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
+                return render_template('FKdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
         if request.form['Submit_Button'] == '重新加载':
             switch = request.form['ip']
             myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)

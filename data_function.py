@@ -53,7 +53,7 @@ def gamesiteinfo(gameType):
     Intermediate = con_mongo('gamekind').find_one({'gameType': gameType, 'name': '中级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
     Senior = con_mongo('gamekind').find_one({'gameType': gameType, 'name': '高级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
     Master = con_mongo('gamekind').find_one({'gameType': gameType, 'name': '大师场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
-    fieldresult = ['初级场：'+str(Primary), '中级场：'+str(Intermediate), '高级场：'+str(Senior), '大师场'+str(Master)]
+    fieldresult = ['初级场：'+str(Primary), '中级场：'+str(Intermediate), '高级场：'+str(Senior), '大师场：'+str(Master)]
     return fieldresult
 
 

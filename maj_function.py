@@ -17,6 +17,7 @@ import json
 import pymysql
 import pymongo
 import data_function
+import public_function
 
 dict_maj = dict(一万='11', 二万='12', 三万='13', 四万='14', 五万='15', 六万='16', 七万='17', 八万='18', 九万='19',
                 一筒='21', 二筒='22', 三筒='23', 四筒='24', 五筒='25', 六筒='26', 七筒='27', 八筒='28', 九筒='29',
@@ -61,7 +62,7 @@ def deploycard():
     #     return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
     else:
         try:
-            card_data = {'gameId': "600102", 'usersCards': [{'userId': user_id, 'cards': card_ID}]}
+            card_data = {'gameId': "600102", 'usersCards': [{'userId': public_function.selectid_mongo(), 'cards': card_ID}]}
             res = requests.post(server_url, json=card_data)
             print(server_url, card_data)
             return render_template('XZmaj_extends.html', Tips=res.text, User_id=user_id, Player=player)

@@ -41,7 +41,7 @@ def Ipstate(gameType):
 
 def Robotswitch(gametype):
     """
-    机器人状态查询
+    机器人开关
     :param gametype: 游戏类型
     :return:
     """
@@ -73,3 +73,15 @@ def updatagold_mongo():
     newvalue ={'$set': {'money': jb_num}}
     data_function.con_mongo('playermoney').update_many(myquery, newvalue)
     return gameID
+
+
+def selectid_mongo():
+    """
+    通过user_id查询player_id
+    :param user_id: 玩家id
+    :return: 返回玩家唯一标识
+    """
+    user_id = str(request.form['User_Id_Data'])
+    player_id = data_function.con_mongo('playerdata').find_one({'userID': user_id}, {'_id': 1})
+    print(player_id)
+    return player_id
