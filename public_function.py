@@ -84,4 +84,4 @@ def selectid_mongo():
     user_id = str(request.form['User_Id_Data'])
     player_id = data_function.con_mongo('playerdata').find_one({'userID': user_id}, {'_id': 1})
     print(player_id)
-    return player_id
+    return player_id['_id']
