@@ -100,7 +100,7 @@ def nextcard():
         return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID', User_id=gameID)
     else:
         card = dict_maj[card_key]
-        data = {'userId': gameID, 'card': card}
+        data = {'userId': public_function.selectid_mongo(), 'card': card}
         req = requests.post(cardpool_url, json=data)
         reqdata = json.loads(req.text)
         return render_template('XZmaj_extends.html', Tips=reqdata["data"], User_id=gameID)
