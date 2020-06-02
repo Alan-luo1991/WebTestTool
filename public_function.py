@@ -68,8 +68,9 @@ def updatagold_mongo():
     :return:
     """
     gameID = str(request.form['User_Id_Data'])
+    player_id = selectid_mongo()
     jb_num = int(request.form['Gold_Number_Data'])
-    myquery = {'_id': gameID}
+    myquery = {'_id': player_id}
     newvalue ={'$set': {'money': jb_num}}
     data_function.con_mongo('playermoney').update_many(myquery, newvalue)
     return gameID
