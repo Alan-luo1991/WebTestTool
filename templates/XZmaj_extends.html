@@ -237,6 +237,9 @@
                                     function ClickInput2() {
                                         ClickText = document.getElementById("NextCardData");
                                     }
+                                    function ClickInput3() {
+                                        ClickText = document.getElementById("LastCardData");
+                                    }
                                     </script>
                                 </div>
                                 <label for="UserIdData" style="margin-left: 60px; margin-top: 20px">游戏ID：</label>
@@ -251,6 +254,10 @@
                                 <label for="NextCardData" style="margin-left: 60px; margin-top: 20px">下一张：</label>
                                 <input id="NextCardData" type="text" name="Next_Card_Data" onclick="ClickInput2()" value="" style="width: 200px">
                                 <input id="NextCard" type="submit" name="Submit_Button" value="拿牌" style="width: 80px; height: 30px; margin-left: 105px;"><br>
+                                <label for="LastCardData" style="margin-left: 60px; margin-top: 20px">牌尾张：</label>
+                                <input id="LastCardData" type="text" name="Last_Card_Data" onclick="ClickInput3()" value="" style="width: 200px">
+                                <input id="LastCard" type="submit" name="Submit_Button" value="配置" style="width: 80px; height: 30px; margin-left: 105px;">
+                                <input id="LastCard" type="submit" name="Submit_Button" value="重置" style="width: 80px; height: 30px;"><br>
                                 <label for="ChangeThreeCardData" style="margin-left: 60px; margin-top: 20px">换三张：</label>
                                 <label class="lyear-radio radio-inline radio-primary">
                                     <input type="radio" name="Change_Three_Card_Data" value="0" checked="checked"><span>关闭</span>

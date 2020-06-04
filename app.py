@@ -72,6 +72,10 @@ def XZmaj_extends():
                 return render_template('XZmaj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
         if request.form['Submit_Button'] == '拿牌':
             return maj_function.nextcard()
+        if request.form['Submit_Button'] == '配置':
+            return maj_function.lastcard('send')
+        if request.form['Submit_Button'] == '重置':
+            return maj_function.lastcard('reset')
         if request.form['Submit_Button'] == '确定修改':
             return public_function.Robotswitch(117)
     return render_template('XZmaj_extends.html')

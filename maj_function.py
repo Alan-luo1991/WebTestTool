@@ -104,3 +104,29 @@ def nextcard():
         req = requests.post(cardpool_url, json=data)
         reqdata = json.loads(req.text)
         return render_template('XZmaj_extends.html', Tips=reqdata["data"], User_id=gameID)
+
+
+def lastcard(type):
+    """
+    发送最后一张牌的配置到服务器
+    :return:
+    """
+    cardpool_url = 'http://10.0.0.32:8080/game/setXZDDLastCard'
+    if type == 'send':
+        card_key = request.form['Last_Card_Data'][:-1]
+        print(card_key)
+        if (card_key in name_list) is False:
+            return render_template('XZmaj_extends.html', Tips='请检查配置麻将牌是否正确')
+        else:
+            data = {'card': int(dict_maj[card_key])}
+            print(data)
+            req = requests.post(cardpool_url, json=data)
+            reqdata = json.loads(req.text)
+            print(reqdata)
+            return render_template('XZmaj_extends.html', Tips=reqdata["data"])
+    if type == 'reset':
+        data = {'card': 0}
+        req = requests.post(cardpool_url, json=data)
+        reqdata = json.loads(req.text)
+        print(reqdata)
+        return render_template('XZmaj_extends.html', Tips=reqdata["data"])
