@@ -61,7 +61,7 @@ def XZmaj_extends():
         return render_template('XZmaj_extends.html', fieldresult=data_function.gamesiteinfo(117), IPresult=public_function.Ipstate(117))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
-            return maj_function.deploycard()
+            return maj_function.deploycard(117)
         if request.form['Submit_Button'] == '换三张':
             return maj_function.changecard()
         if request.form['Submit_Button'] == '修改金币':
@@ -79,6 +79,33 @@ def XZmaj_extends():
         if request.form['Submit_Button'] == '确定修改':
             return public_function.Robotswitch(117)
     return render_template('XZmaj_extends.html')
+
+
+@app.route('/XLmaj_extends.html', methods=['GET', 'POST'])
+def XLmaj_extends():
+    global player
+    if request.method == 'GET':
+        return render_template('XLmaj_extends.html', fieldresult=data_function.gamesiteinfo(119), IPresult=public_function.Ipstate(119))
+    if request.method == 'POST':
+        if request.form['Submit_Button'] == '确认发送':
+            return maj_function.deploycard(119)
+        if request.form['Submit_Button'] == '换三张':
+            return maj_function.changecard()
+        if request.form['Submit_Button'] == '修改金币':
+            try:
+                public_function.updatagold_mongo()
+                return render_template('XLmaj_extends.html', Tips='修改金币成功', User_id=public_function.updatagold_mongo())
+            except:
+                return render_template('XLmaj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
+        if request.form['Submit_Button'] == '拿牌':
+            return maj_function.nextcard()
+        if request.form['Submit_Button'] == '配置':
+            return maj_function.lastcard('send')
+        if request.form['Submit_Button'] == '重置':
+            return maj_function.lastcard('reset')
+        if request.form['Submit_Button'] == '确定修改':
+            return public_function.Robotswitch(117)
+    return render_template('XLmaj_extends.html')
 
 
 @app.route('/HLdoudz_extends.html', methods=['GET', 'POST'])

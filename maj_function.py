@@ -27,7 +27,7 @@ player = ''
 name_list = dict_maj.keys()
 
 
-def deploycard():
+def deploycard(gametype):
     """
     发送配置到服务器
     :return:
@@ -62,7 +62,7 @@ def deploycard():
     #     return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
     else:
         try:
-            card_data = {'gameId': "117", 'usersCards': [{'userId': public_function.selectid_mongo(), 'cards': card_ID}]}
+            card_data = {'gameId': str(gametype), 'usersCards': [{'userId': public_function.selectid_mongo(), 'cards': card_ID}]}
             res = requests.post(server_url, json=card_data)
             print(server_url, card_data)
             return render_template('XZmaj_extends.html', Tips=res.text, User_id=user_id, Player=player)
