@@ -87,7 +87,7 @@ def HLdoudz_extends():
         return render_template('HLdoudz_extends.html', IPresult=public_function.Ipstate(100))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
-            return doudz_function.deploycard(str(600101))
+            return doudz_function.deploycard(str(100))
         if request.form['Submit_Button'] == '修改金币':
             try:
                 public_function.updatagold_mongo()
@@ -116,10 +116,10 @@ def HLdoudz_extends():
 @app.route('/FKdoudz_extends.html', methods=['GET', 'POST'])
 def FKdoudz_extends():
     if request.method == 'GET':
-        return render_template('FKdoudz_extends.html', IPresult=public_function.Ipstate(100))
+        return render_template('FKdoudz_extends.html', IPresult=public_function.Ipstate(118))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
-            return doudz_function.deploycard(str(600103))
+            return doudz_function.deploycard(str(118))
         if request.form['Submit_Button'] == '修改金币':
             try:
                 public_function.updatagold_mongo()
@@ -128,10 +128,10 @@ def FKdoudz_extends():
                 return render_template('FKdoudz_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
         if request.form['Submit_Button'] == '重新加载':
             switch = request.form['ip']
-            myclient = pymongo.MongoClient(host='10.0.0.251', port=27017)
+            myclient = pymongo.MongoClient(host='10.0.0.252', port=27017)
             mydb = myclient['wanke']
             mycol = mydb['gamekind']
-            myquery = {'gameType': 100, 'enabled': bool(2 > 1)}
+            myquery = {'gameType': 118, 'enabled': bool(2 > 1)}
             if switch == 'open':
                 newvalue = {'$set': {'matchIp': bool(2 > 1)}}
                 mycol.update_many(myquery, newvalue)

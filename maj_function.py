@@ -62,7 +62,7 @@ def deploycard():
     #     return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
     else:
         try:
-            card_data = {'gameId': "600102", 'usersCards': [{'userId': public_function.selectid_mongo(), 'cards': card_ID}]}
+            card_data = {'gameId': "117", 'usersCards': [{'userId': public_function.selectid_mongo(), 'cards': card_ID}]}
             res = requests.post(server_url, json=card_data)
             print(server_url, card_data)
             return render_template('XZmaj_extends.html', Tips=res.text, User_id=user_id, Player=player)
@@ -103,7 +103,10 @@ def nextcard():
         data = {'userId': public_function.selectid_mongo(), 'card': card}
         req = requests.post(cardpool_url, json=data)
         reqdata = json.loads(req.text)
-        return render_template('XZmaj_extends.html', Tips=reqdata["data"], User_id=gameID)
+        if public_function.selectid_mongo() == "找不到对应的ID":
+            return render_template('XZmaj_extends.html', Tips=public_function.selectid_mongo(), User_id=gameID)
+        else:
+            return render_template('XZmaj_extends.html', Tips=reqdata["data"], User_id=gameID)
 
 
 def lastcard(type):

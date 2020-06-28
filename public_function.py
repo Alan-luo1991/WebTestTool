@@ -46,7 +46,7 @@ def Robotswitch(gametype):
     :return:
     """
     switch_maj = request.form['robot']
-    game_site = request.form['game_site']
+    game_site = str(request.form['game_site'])
     myquery = {'gameType': gametype, 'name': game_site}
     if switch_maj == 'open':
         newvalue = {'$set': {'enableRobot': bool(2 > 1)}}
@@ -83,6 +83,12 @@ def selectid_mongo():
     :return: 返回玩家唯一标识
     """
     user_id = str(request.form['User_Id_Data'])
-    player_id = data_function.con_mongo('playerdata').find_one({'userID': user_id}, {'_id': 1})
-    print(player_id)
-    return player_id['_id']
+    try:
+        player_id = data_function.con_mongo('playerdata').find_one({'userID': user_id}, {'_id': 1})
+        print(player_id)
+        if player_id is None:
+            return "找不到对应的ID"
+        else:
+            return player_id['_id']
+    except:
+        return "找不到对应的ID"
