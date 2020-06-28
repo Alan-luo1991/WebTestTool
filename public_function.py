@@ -16,14 +16,15 @@ import data_function
 import requests
 import pymysql
 
+game_dict = {117: 'XZmaj_extends.html', 119: 'XLmaj_extends.html'}
 
-def Ipstate(gameType):
+def Ipstate(gametype):
     """
     IP状态查询
     :param gameType: 游戏类型
     :return:
     """
-    result = data_function.con_mongo('gamekind').find_one({'gameType': gameType, 'enabled': bool(2 > 1)}, {'_id': 0, 'matchIp': 1})
+    result = data_function.con_mongo('gamekind').find_one({'gameType': gametype, 'enabled': bool(2 > 1)}, {'_id': 0, 'matchIp': 1})
     if bool(result) is False:
         IPresult = '数据库为空'
         return IPresult
@@ -52,13 +53,13 @@ def Robotswitch(gametype):
         newvalue = {'$set': {'enableRobot': bool(2 > 1)}}
         data_function.con_mongo('gamekind').update_many(myquery, newvalue)
         requests.get('http://10.0.0.204:30016/user/updategame')
-        return render_template('XZmaj_extends.html', Tips=game_site + '-->机器人已打开，现在能够匹配到机器人了',
+        return render_template(game_dict[gametype], Tips=game_site + '-->机器人已打开，现在能够匹配到机器人了',
                                fieldresult=data_function.gamesiteinfo(gametype))
     if switch_maj == 'close':
         newvalue = {'$set': {'enableRobot': bool(1 > 2)}}
         data_function.con_mongo('gamekind').update_many(myquery, newvalue)
         requests.get('http://10.0.0.204:30016/user/updategame')
-        return render_template('XZmaj_extends.html', Tips=game_site + '-->机器人已关闭，现在无法匹配到机器人了',
+        return render_template(game_dict[gametype], Tips=game_site + '-->机器人已关闭，现在无法匹配到机器人了',
                                fieldresult=data_function.gamesiteinfo(gametype))
 
 

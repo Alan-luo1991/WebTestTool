@@ -63,7 +63,7 @@ def XZmaj_extends():
         if request.form['Submit_Button'] == '确认发送':
             return maj_function.deploycard(117)
         if request.form['Submit_Button'] == '换三张':
-            return maj_function.changecard()
+            return maj_function.changecard(117)
         if request.form['Submit_Button'] == '修改金币':
             try:
                 public_function.updatagold_mongo()
@@ -71,11 +71,11 @@ def XZmaj_extends():
             except:
                 return render_template('XZmaj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
         if request.form['Submit_Button'] == '拿牌':
-            return maj_function.nextcard()
+            return maj_function.nextcard(117)
         if request.form['Submit_Button'] == '配置':
-            return maj_function.lastcard('send')
+            return maj_function.lastcard(117, 'send')
         if request.form['Submit_Button'] == '重置':
-            return maj_function.lastcard('reset')
+            return maj_function.lastcard(117, 'reset')
         if request.form['Submit_Button'] == '确定修改':
             return public_function.Robotswitch(117)
     return render_template('XZmaj_extends.html')
@@ -90,7 +90,7 @@ def XLmaj_extends():
         if request.form['Submit_Button'] == '确认发送':
             return maj_function.deploycard(119)
         if request.form['Submit_Button'] == '换三张':
-            return maj_function.changecard()
+            return maj_function.changecard(119)
         if request.form['Submit_Button'] == '修改金币':
             try:
                 public_function.updatagold_mongo()
@@ -98,13 +98,13 @@ def XLmaj_extends():
             except:
                 return render_template('XLmaj_extends.html', Tips='请检查游戏ID或者是否连接到内网', User_id=public_function.updatagold_mongo())
         if request.form['Submit_Button'] == '拿牌':
-            return maj_function.nextcard()
+            return maj_function.nextcard(119)
         if request.form['Submit_Button'] == '配置':
-            return maj_function.lastcard('send')
+            return maj_function.lastcard(119, 'send')
         if request.form['Submit_Button'] == '重置':
-            return maj_function.lastcard('reset')
+            return maj_function.lastcard(119, 'reset')
         if request.form['Submit_Button'] == '确定修改':
-            return public_function.Robotswitch(117)
+            return public_function.Robotswitch(119)
     return render_template('XLmaj_extends.html')
 
 

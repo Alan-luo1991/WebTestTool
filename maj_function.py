@@ -70,7 +70,7 @@ def deploycard(gametype):
             pass
 
 
-def changecard():
+def changecard(gametype):
     """
     发送换三张配置到服务器
     :return:
@@ -80,12 +80,12 @@ def changecard():
         server_url = 'http://10.0.0.32:8080/game/setXzddExchange'
         data = {"exchange": int(change_num)}
         res = requests.post(server_url, json=data)
-        return render_template('XZmaj_extends.html', Tips=res.text)
+        return render_template(game_dict[gametype], Tips=res.text)
     except:
-        return render_template('XZmaj_extends.html', Tips='无法连接到数据库，请联系管理员！')
+        return render_template(game_dict[gametype], Tips='无法连接到数据库，请联系管理员！')
 
 
-def nextcard():
+def nextcard(gametype):
     """
     发送下一张拿牌配置到服务器
     :return:
@@ -95,21 +95,21 @@ def nextcard():
     card_key = request.form['Next_Card_Data'][:-1]
     print(card_key)
     if (card_key in name_list) is False:
-        return render_template('XZmaj_extends.html', Tips='请检查配置麻将牌是否正确', User_id=gameID)
+        return render_template(game_dict[gametype], Tips='请检查配置麻将牌是否正确', User_id=gameID)
     elif len(gameID) == 0:
-        return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID', User_id=gameID)
+        return render_template(game_dict[gametype], Tips='请输入正确的游戏ID', User_id=gameID)
     else:
         card = dict_maj[card_key]
         data = {'userId': public_function.selectid_mongo(), 'card': card}
         req = requests.post(cardpool_url, json=data)
         reqdata = json.loads(req.text)
         if public_function.selectid_mongo() == "找不到对应的ID":
-            return render_template('XZmaj_extends.html', Tips=public_function.selectid_mongo(), User_id=gameID)
+            return render_template(game_dict[gametype], Tips=public_function.selectid_mongo(), User_id=gameID)
         else:
-            return render_template('XZmaj_extends.html', Tips=reqdata["data"], User_id=gameID)
+            return render_template(game_dict[gametype], Tips=reqdata["data"], User_id=gameID)
 
 
-def lastcard(type):
+def lastcard(gametype, type):
     """
     发送最后一张牌的配置到服务器
     :return:
@@ -119,17 +119,17 @@ def lastcard(type):
         card_key = request.form['Last_Card_Data'][:-1]
         print(card_key)
         if (card_key in name_list) is False:
-            return render_template('XZmaj_extends.html', Tips='请检查配置麻将牌是否正确')
+            return render_template(game_dict[gametype], Tips='请检查配置麻将牌是否正确')
         else:
             data = {'card': int(dict_maj[card_key])}
             print(data)
             req = requests.post(cardpool_url, json=data)
             reqdata = json.loads(req.text)
             print(reqdata)
-            return render_template('XZmaj_extends.html', Tips=reqdata["data"])
+            return render_template(game_dict[gametype], Tips=reqdata["data"])
     if type == 'reset':
         data = {'card': 0}
         req = requests.post(cardpool_url, json=data)
         reqdata = json.loads(req.text)
         print(reqdata)
-        return render_template('XZmaj_extends.html', Tips=reqdata["data"])
+        return render_template(game_dict[gametype], Tips=reqdata["data"])
