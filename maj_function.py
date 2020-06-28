@@ -25,7 +25,7 @@ dict_maj = dict(一万='11', 二万='12', 三万='13', 四万='14', 五万='15',
 player = ''
 # 取出所有的key
 name_list = dict_maj.keys()
-
+game_dict = {'117': 'XZmaj_extends.html', '119': 'XLmaj_extends.html'}
 
 def deploycard(gametype):
     """
@@ -55,9 +55,9 @@ def deploycard(gametype):
         if value > card_max_number:
             card_max_number = value
     if card_list == '':
-        return render_template('XZmaj_extends.html', Tips='配牌不能为空！', User_id=user_id)
+        return render_template(game_dict[gametype], Tips='配牌不能为空！', User_id=user_id)
     elif card_max_number > 4:
-        return render_template('XZmaj_extends.html', Tips='相同牌不能超过4张！', User_id=user_id)
+        return render_template(game_dict[gametype], Tips='相同牌不能超过4张！', User_id=user_id)
     # elif user_id.isdigit() is False:
     #     return render_template('XZmaj_extends.html', Tips='请输入正确的游戏ID！', User_id=user_id)
     else:
@@ -65,7 +65,7 @@ def deploycard(gametype):
             card_data = {'gameId': str(gametype), 'usersCards': [{'userId': public_function.selectid_mongo(), 'cards': card_ID}]}
             res = requests.post(server_url, json=card_data)
             print(server_url, card_data)
-            return render_template('XZmaj_extends.html', Tips=res.text, User_id=user_id, Player=player)
+            return render_template(game_dict[gametype], Tips=res.text, User_id=user_id, Player=player)
         except:
             pass
 

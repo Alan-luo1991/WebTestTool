@@ -24,7 +24,7 @@ dict_ddz = dict(方块A='0x01', 方块2='0x02', 方块3='0x03', 方块4='0x04', 
                 黑桃2='0x32', 黑桃3='0x33', 黑桃4='0x34', 黑桃5='0x35', 黑桃6='0x36', 黑桃7='0x37', 黑桃8='0x38', 黑桃9='0x39',
                 黑桃10='0x3A', 黑桃J='0x3B', 黑桃Q='0x3C', 黑桃K='0x3D', 小王='0x4E', 大王='0x4F')
 # 斗地主游戏类型
-game_dict = {'600101': 'HLdoudz_extends.html', '600103': 'FKdoudz_extends.html'}
+game_dict = {'100': 'HLdoudz_extends.html', '118': 'FKdoudz_extends.html'}
 
 
 def deploycard(gametype):
