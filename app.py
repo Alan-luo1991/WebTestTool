@@ -114,7 +114,7 @@ def HLdoudz_extends():
         return render_template('HLdoudz_extends.html', IPresult=public_function.Ipstate(100))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
-            return doudz_function.deploycard(str(100))
+            return doudz_function.deploycard(100)
         if request.form['Submit_Button'] == '修改金币':
             try:
                 public_function.updatagold_mongo()
@@ -146,7 +146,7 @@ def FKdoudz_extends():
         return render_template('FKdoudz_extends.html', IPresult=public_function.Ipstate(118))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
-            return doudz_function.deploycard(str(118))
+            return doudz_function.deploycard(118)
         if request.form['Submit_Button'] == '修改金币':
             try:
                 public_function.updatagold_mongo()

@@ -25,7 +25,7 @@ dict_maj = dict(一万='11', 二万='12', 三万='13', 四万='14', 五万='15',
 player = ''
 # 取出所有的key
 name_list = dict_maj.keys()
-game_dict = {'117': 'XZmaj_extends.html', '119': 'XLmaj_extends.html'}
+game_dict = {117: 'XZmaj_extends.html', 119: 'XLmaj_extends.html'}
 
 def deploycard(gametype):
     """
