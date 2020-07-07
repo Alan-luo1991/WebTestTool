@@ -25,6 +25,8 @@ import data_function
 import maj_function
 import public_function
 import doudz_function
+import operations_server
+import json
 
 
 # 实例化，可视为固定格式
@@ -52,6 +54,33 @@ def hello_world():
 def homepage():
 
     return render_template('homepage.html')
+
+
+@app.route("/operations_ser.html", methods=['GET', 'POST'])
+def operations():
+    if request.method == 'GET':
+        return render_template('operations_ser.html')
+    if request.method == 'POST':
+        servername = request.form['environment']
+        version = request.form['version_data']
+        process = request.form['process']
+        if request.form['Submit_Button'] == '关闭服务器':
+            result = operations_server.stop(servername)
+            return render_template('operations_ser.html', result=result)
+        if request.form['Submit_Button'] == '启动服务器':
+            result = operations_server.start(servername)
+            return render_template('operations_ser.html', result=result)
+        if request.form['Submit_Button'] == '确认部署':
+            result = operations_server.updata(servername, version)
+            return render_template('operations_ser.html', result=result)
+        if request.form['Submit_Button'] == '重启进程':
+            if request.form['process'] == 'svc-roomserver':
+                result = operations_server.reload(servername, process)
+                return render_template('operations_ser.html', result=result)
+            if request.form['process'] == 'svc-payserver':
+                result = operations_server.reload(servername, process)
+                return render_template('operations_ser.html', result=result)
+    return render_template('operations_ser.html')
 
 
 @app.route('/XZmaj_extends.html', methods=['GET', 'POST'])

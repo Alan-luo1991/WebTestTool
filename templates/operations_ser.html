@@ -28,7 +28,9 @@
               <a href="javascript:void(0)"><i class="mdi mdi-menu"></i>配牌工具</a>
               <ul class="nav nav-subnav">
                 <li> <a href="XZmaj_extends.html">血战到底</a> </li>
-                <li> <a href="HLdoudz_extends.html">斗地主</a> </li>
+                <li> <a href="XLmaj_extends.html">血流成河</a> </li>
+                <li> <a href="HLdoudz_extends.html">欢乐斗地主</a> </li>
+                <li> <a href="FKdoudz_extends.html">疯狂斗地主</a> </li>
               </ul>
             </li>
             <li class="nav-item active"> <a href="operations_ser.html"><i class="mdi mdi-file-outline"></i>服务器部署</a> </li>
@@ -199,10 +201,32 @@
 
     <!--页面主要内容-->
     <main class="lyear-layout-content">
+        <p>版本号格式：0.0.1-20</p>
         <form method="post">
-            <input id="checkconfig" type="submit" name="checkconfig" style="margin-left: 680px; margin-top: 15px; width: 150px; height: 50px" value="开始检查">
-            <input id="updateconfig" type="submit" name="checkconfig" style="width: 150px; height: 50px" onclick="alert('更新完成')" value="更新配置表">
-            <textarea rows="37" cols="150" style="margin-left: 300px; margin-top: 15px; line-height: 2" wrap="hard">{{ CheckResult }}</textarea>
+            <label style="margin-left: 60px; margin-top: 20px">环境名称：</label>
+                <label class="lyear-radio radio-inline radio-primary">
+                    <input type="radio" name="environment" value="wanda-test-use" checked="checked"><span>测试环境</span>
+                </label>
+                <label class="lyear-radio radio-inline radio-primary">
+                    <input type="radio" name="environment" value="wanda-ce-hua"><span>策划环境</span>
+                </label>
+                <label class="lyear-radio radio-inline radio-primary">
+                    <input type="radio" name="environment" value="wanda-games"><span>开发环境</span>
+                </label><br>
+            <label style="margin-left: 60px; margin-top: 20px">版 本 号 ：</label>
+            <input id="version" type="text" name="version_data" value="" style="width: 200px">
+            <input id="updataser" type="submit" name="Submit_Button" onclick="" value="确认部署" style="width: 80px; height: 30px; margin-left: 105px;"><br>
+            <label style="margin-left: 60px; margin-top: 20px">单个进程：</label>
+                <label class="lyear-radio radio-inline radio-primary">
+                    <input type="radio" name="process" value="svc-roomserver" checked="checked"><span>房间进程</span>
+                </label>
+                <label class="lyear-radio radio-inline radio-primary">
+                    <input type="radio" name="process" value="svc-payserver"><span>支付进程</span>
+                </label>
+            <input id="reloadser" type="submit" name="Submit_Button" onclick="" value="重启进程" style="width: 80px; height: 30px; margin-left: 117px;"><br>
+            <input id="startser" type="submit" name="Submit_Button" onclick="" value="关闭服务器" style="width: 90px; height: 40px; margin-left: 60px;">
+            <input id="stopser" type="submit" name="Submit_Button" onclick="" value="启动服务器" style="width: 90px; height: 40px; margin-left: 105px; margin-top: 15px"><br>
+            <textarea rows="37" cols="150" style="margin-left: 60px; margin-top: 15px; line-height: 2" wrap="soft">{{ result }}</textarea>
         </form>
     </main>
     <!--End 页面主要内容-->
