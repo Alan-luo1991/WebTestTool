@@ -42,15 +42,19 @@ processlist = ["svc-roomserver", "svc-playerserver", "svc-payserver", "svc-agent
                "gateway-gwapi"]
 
 gatewaylist = ["gateway-payapi", "gateway-authapi", "gateway-lobbyapi", "gateway-xlch", "gateway-fkddz",
-               "gateway-game-xzdd", "gateway-gameapi",
-               "gateway-gwapi"]
+               "gateway-game-xzdd", "gateway-gameapi", "gateway-gwapi"]
+
 svclist = ["svc-roomserver", "svc-playerserver", "svc-payserver", "svc-agentserver"]
 
 
+gatewaydict = {"gateway-payapi": "game-payapi", "gateway-authapi": "game-authapi", "gateway-lobbyapi": "game-lobbyapi",
+               "gateway-xlch": "game-gameapi-xlch", "gateway-fkddz": "game-gameapi-fkddz", "gateway-game-xzdd": "game-gameapi-xzdd",
+               "gateway-gameapi": "game-gameapi", "gateway-gwapi": "game-gwapi"}
+
 def updata(servername, version):
     result = ''
-    ser_version = "10.0.0.250/wanke/game-authapi:{}".format(version)
     for process in svclist:
+        ser_version = "10.0.0.250/wanke/game-{}:{}".format(process[4:], version)
         updata_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/{}/statefulsets/{}".format(servername,
                                                                                                          process)
         get_test = requests.get(updata_url, headers=get_headers)
@@ -72,11 +76,13 @@ def updata(servername, version):
                              "hostAliases": [{"ip": "10.0.0.206", "hostnames": ["mongo1", "mongo2", "mongo3"]}],
                              "terminationGracePeriodSeconds": 10}}, "replicas": 1, "volumeClaimTemplates": [],
                 "serviceName": process}}
+        time.sleep(5)
         res_updata = requests.put(updata_url, json=svc_data, headers=headers)
         result += res_updata.text + '/n'
     for process in gatewaylist:
         updata_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/{}/statefulsets/{}".format(servername,
                                                                                                          process)
+        ser_version = "10.0.0.250/wanke/{}:{}".format(gatewaydict[process], version)
         get_test = requests.get(updata_url, headers=get_headers)
         jsondata = json.loads(get_test.text)["metadata"]
         gateway_data = {"apiVersion": "apps/v1", "kind": "StatefulSet",
@@ -99,7 +105,7 @@ def updata(servername, version):
                                  {"ip": "10.0.0.206", "hostnames": ["mongo1", "mongo2", "mongo3"]}],
                              "terminationGracePeriodSeconds": 30}}, "replicas": 1, "volumeClaimTemplates": [],
                 "serviceName": process}}
-        time.sleep(2)
+        time.sleep(5)
         res_updata = requests.put(updata_url, json=gateway_data, headers=headers)
         result += res_updata.text + '/n'
     get_test = requests.get("http://10.0.0.200:32567/k8s-api/api/v1/namespaces/wanda-test-use/services/gateway-gwapi",
@@ -128,7 +134,6 @@ def start(servername):
         time.sleep(3)
         res_start = requests.put(url, json=data, headers=headers)
         result += res_start.text + "/n"
-    print(result)
     return result
 
 
@@ -141,14 +146,28 @@ def stop(servername):
         time.sleep(3)
         res_stop = requests.put(url, json=data, headers=headers)
         result += res_stop.text + "/n"
-    print(result)
-    return res_stop.text
+    return result
 
 
 def reload(servername, process):
     url = "http://10.0.0.200:32567/k8s-api/api/v1/namespaces/{}/pods/{}-0".format(servername, process)
     res_reload = requests.delete(url, headers=headers)
     return res_reload.text
+
+
+def selectstatus():
+    test_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/wanda-test-use/statefulsets?"
+    plan_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/wanda-ce-hua/statefulsets?"
+    program_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/wanda-games/statefulsets?"
+    res_test = requests.get(test_url, headers=headers)
+    res_plan = requests.get(plan_url, headers=headers)
+    res_program = requests.get(program_url, headers=headers)
+    test_result = json.loads(res_test.text)["items"][0]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
+    plan_result = json.loads(res_plan.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
+    program_result = json.loads(res_program.text)["items"][0]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
+    server_status = "测试环境当前版本号：" + test_result + "\n" + "策划环境当前版本号：" + plan_result + "\n" + "开发环境当前版本号：" + program_result
+    return server_status
+
 
 # start("wanda-test-use")
 # stop("wanda-test-use")

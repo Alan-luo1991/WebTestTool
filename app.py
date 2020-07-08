@@ -59,27 +59,27 @@ def homepage():
 @app.route("/operations_ser.html", methods=['GET', 'POST'])
 def operations():
     if request.method == 'GET':
-        return render_template('operations_ser.html')
+        return render_template('operations_ser.html', ser_status=operations_server.selectstatus())
     if request.method == 'POST':
         servername = request.form['environment']
         version = request.form['version_data']
         process = request.form['process']
         if request.form['Submit_Button'] == '关闭服务器':
             result = operations_server.stop(servername)
-            return render_template('operations_ser.html', result=result)
+            return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
         if request.form['Submit_Button'] == '启动服务器':
             result = operations_server.start(servername)
-            return render_template('operations_ser.html', result=result)
+            return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
         if request.form['Submit_Button'] == '确认部署':
             result = operations_server.updata(servername, version)
-            return render_template('operations_ser.html', result=result)
+            return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
         if request.form['Submit_Button'] == '重启进程':
             if request.form['process'] == 'svc-roomserver':
                 result = operations_server.reload(servername, process)
-                return render_template('operations_ser.html', result=result)
+                return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
             if request.form['process'] == 'svc-payserver':
                 result = operations_server.reload(servername, process)
-                return render_template('operations_ser.html', result=result)
+                return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
     return render_template('operations_ser.html')
 
 
