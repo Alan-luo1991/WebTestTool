@@ -43,6 +43,18 @@ def con_mongo(DBset):
     return mycol
 
 
+def con_mongo252(DBset):
+    """
+    连接mongoDB
+    :param DBset: 表名称
+    :return: 表对象
+    """
+    myclient = pymongo.MongoClient(host='10.0.0.252', port=27017)
+    mydb = myclient['wanyu']
+    mycol = mydb[DBset]
+    return mycol
+
+
 def gamesiteinfo(gameType):
     """
     查询游戏场次中机器人开关状态

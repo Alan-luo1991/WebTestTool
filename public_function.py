@@ -89,7 +89,11 @@ def selectid_mongo():
         player_id = data_function.con_mongo('playerdata').find_one({'userID': user_id}, {'_id': 1})
         print(player_id)
         if player_id is None:
-            return "找不到对应的ID"
+            player_id = data_function.con_mongo252('playerdata').find_one({'userID': user_id}, {'_id': 1})
+            if player_id is None:
+                return "找不到对应的ID"
+            else:
+                return player_id['_id']
         else:
             return player_id['_id']
     except:

@@ -27,6 +27,7 @@ player = ''
 name_list = dict_maj.keys()
 game_dict = {117: 'XZmaj_extends.html', 119: 'XLmaj_extends.html'}
 
+
 def deploycard(gametype):
     """
     发送配置到服务器
