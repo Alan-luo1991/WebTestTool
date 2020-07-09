@@ -18,6 +18,7 @@ import pymysql
 
 game_dict = {117: 'XZmaj_extends.html', 119: 'XLmaj_extends.html'}
 
+
 def Ipstate(gametype):
     """
     IP状态查询

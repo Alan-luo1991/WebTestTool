@@ -51,6 +51,7 @@ gatewaydict = {"gateway-payapi": "game-payapi", "gateway-authapi": "game-authapi
                "gateway-xlch": "game-gameapi-xlch", "gateway-fkddz": "game-gameapi-fkddz", "gateway-game-xzdd": "game-gameapi-xzdd",
                "gateway-gameapi": "game-gameapi", "gateway-gwapi": "game-gwapi"}
 
+
 def updata(servername, version):
     result = ''
     for process in svclist:
@@ -78,7 +79,7 @@ def updata(servername, version):
                 "serviceName": process}}
         time.sleep(5)
         res_updata = requests.put(updata_url, json=svc_data, headers=headers)
-        result += res_updata.text + '/n'
+        result += res_updata.text + '\n'
     for process in gatewaylist:
         updata_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/{}/statefulsets/{}".format(servername,
                                                                                                          process)
@@ -107,7 +108,7 @@ def updata(servername, version):
                 "serviceName": process}}
         time.sleep(5)
         res_updata = requests.put(updata_url, json=gateway_data, headers=headers)
-        result += res_updata.text + '/n'
+        result += res_updata.text + '\n'
     get_test = requests.get("http://10.0.0.200:32567/k8s-api/api/v1/namespaces/wanda-test-use/services/gateway-gwapi",
                  headers=get_headers)
     jsondata = json.loads(get_test.text)["metadata"]
@@ -121,7 +122,7 @@ def updata(servername, version):
                       "clusterIP": "10.1.214.247"}}
     res_gwapi = requests.put('http://10.0.0.200:32567/k8s-api/api/v1/namespaces/{}/services/gateway-gwapi'.format(
         servername), json=gwapi, headers=headers)
-    result += res_gwapi.text + '/n'
+    result += res_gwapi.text + '\n'
     return result
 
 
@@ -133,7 +134,7 @@ def start(servername):
                 "spec": {"replicas": 1}}
         time.sleep(3)
         res_start = requests.put(url, json=data, headers=headers)
-        result += res_start.text + "/n"
+        result += res_start.text + "\n"
     return result
 
 
@@ -145,7 +146,7 @@ def stop(servername):
                 "spec": {"replicas": 0}}
         time.sleep(3)
         res_stop = requests.put(url, json=data, headers=headers)
-        result += res_stop.text + "/n"
+        result += res_stop.text + "\n"
     return result
 
 
@@ -164,11 +165,6 @@ def selectstatus():
     res_program = requests.get(program_url, headers=headers)
     test_result = json.loads(res_test.text)["items"][0]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
     plan_result = json.loads(res_plan.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
-    program_result = json.loads(res_program.text)["items"][0]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
+    program_result = json.loads(res_program.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
     server_status = "测试环境当前版本号：" + test_result + "\n" + "策划环境当前版本号：" + plan_result + "\n" + "开发环境当前版本号：" + program_result
     return server_status
-
-
-# start("wanda-test-use")
-# stop("wanda-test-use")
-# updata("wanda-test-use", "0.0.1-23")

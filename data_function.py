@@ -37,7 +37,7 @@ def con_mongo(DBset):
     :param DBset: 表名称
     :return: 表对象
     """
-    myclient = pymongo.MongoClient(host='10.0.0.252', port=27017)
+    myclient = pymongo.MongoClient(host='10.0.0.206', port=37017)
     mydb = myclient['wanyu']
     mycol = mydb[DBset]
     return mycol
