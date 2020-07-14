@@ -6,9 +6,9 @@
 # @File     : WebTestTool.py
 # @Purpose  :
 # @Software : PyCharm
-# @Copyright:   (c)  2019
+# @Copyright:   (c)  2020
 # @Licence  :     <your licence>
-# @Version  :   V1.0 2020/07/07 10:49
+# @Version  :   V1.0 2020/07/09 16:21
 import requests
 import time
 import json
