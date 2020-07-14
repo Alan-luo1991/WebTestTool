@@ -94,7 +94,6 @@ def nextcard(gametype):
     cardpool_url = 'http://10.0.0.32:8080/game/setXZDDNextCard'
     gameID = request.form['User_Id_Data']
     card_key = request.form['Next_Card_Data'][:-1]
-    print(card_key)
     if (card_key in name_list) is False:
         return render_template(game_dict[gametype], Tips='请检查配置麻将牌是否正确', User_id=gameID)
     elif len(gameID) == 0:
