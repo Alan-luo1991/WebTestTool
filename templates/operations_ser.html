@@ -203,19 +203,32 @@
     <main class="lyear-layout-content">
         <form method="post">
             <p style="margin-left: 60px; margin-top: 20px; color: #90111A">版本号格式：0.0.1-20   ---部署前请一定要先点击"关闭服务器"按钮，再点击"确认部署"按钮，部署成功后，服务器自动启动完毕</p>
+             <script type="text/javascript">
+                function test(){
+                    var addressID = $("input[name='environment']:checked").val();
+                    console.log(addressID)
+                    if(!addressID){
+                        alert("环境名称不能为空！");
+                        return false;
+                    }
+                }
+            </script><br>
             <label style="margin-left: 60px; margin-top: 20px">环境名称：</label>
                 <label class="lyear-radio radio-inline radio-primary">
-                    <input type="radio" name="environment" value="wanda-test-use"><span>测试环境</span>
+                    <input id="environment" type="radio" name="environment" value="wanda-test-use"><span>测试环境</span>
                 </label>
                 <label class="lyear-radio radio-inline radio-primary">
-                    <input type="radio" name="environment" value="wanda-ce-hua" checked="checked"><span>策划环境</span>
+                    <input id="environment" type="radio" name="environment" value="wanda-ce-hua"><span>策划环境</span>
                 </label>
                 <label class="lyear-radio radio-inline radio-primary">
-                    <input type="radio" name="environment" value="wanda-games"><span>开发环境</span>
+                    <input id="environment" type="radio" name="environment" value="wanda-games"><span>开发环境</span>
+                </label>
+                <label class="lyear-radio radio-inline radio-primary">
+                    <input id="environment" type="radio" name="environment" value="games"><span>外网测试环境</span>
                 </label><br>
             <label style="margin-left: 60px; margin-top: 20px">版 本 号 ：</label>
             <input id="version" type="text" name="version_data" value="" style="width: 200px">
-            <input id="updataser" type="submit" name="Submit_Button" onclick="" value="确认部署" style="width: 80px; height: 30px; margin-left: 105px;"><br>
+            <input id="updataser" type="submit" name="Submit_Button" onclick="test()" value="确认部署" style="width: 80px; height: 30px; margin-left: 105px;"><br>
             <label style="margin-left: 60px; margin-top: 20px">单个进程：</label>
                 <label class="lyear-radio radio-inline radio-primary">
                     <input type="radio" name="process" value="svc-roomserver" checked="checked"><span>房间进程</span>

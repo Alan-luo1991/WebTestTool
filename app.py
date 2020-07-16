@@ -71,6 +71,8 @@ def operations():
             result = operations_server.start(servername)
             return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
         if request.form['Submit_Button'] == '确认部署':
+            if version == '':
+                return render_template('operations_ser.html', result='版本号不能为空！')
             result = operations_server.updata(servername, version)
             return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
         if request.form['Submit_Button'] == '重启进程':
