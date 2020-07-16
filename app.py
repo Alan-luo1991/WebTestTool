@@ -61,27 +61,30 @@ def operations():
     if request.method == 'GET':
         return render_template('operations_ser.html', ser_status=operations_server.selectstatus())
     if request.method == 'POST':
-        servername = request.form['environment']
-        version = request.form['version_data']
-        process = request.form['process']
-        if request.form['Submit_Button'] == '关闭服务器':
-            result = operations_server.stop(servername)
-            return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
-        if request.form['Submit_Button'] == '启动服务器':
-            result = operations_server.start(servername)
-            return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
-        if request.form['Submit_Button'] == '确认部署':
-            if version == '':
-                return render_template('operations_ser.html', result='版本号不能为空！')
-            result = operations_server.updata(servername, version)
-            return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
-        if request.form['Submit_Button'] == '重启进程':
-            if request.form['process'] == 'svc-roomserver':
-                result = operations_server.reload(servername, process)
+        try:
+            servername = request.form['environment']
+            version = request.form['version_data']
+            process = request.form['process']
+            if request.form['Submit_Button'] == '关闭服务器':
+                result = operations_server.stop(servername)
                 return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
-            if request.form['process'] == 'svc-payserver':
-                result = operations_server.reload(servername, process)
+            if request.form['Submit_Button'] == '启动服务器':
+                result = operations_server.start(servername)
                 return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
+            if request.form['Submit_Button'] == '确认部署':
+                if version == '':
+                    return render_template('operations_ser.html', result='版本号不能为空！')
+                result = operations_server.updata(servername, version)
+                return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
+            if request.form['Submit_Button'] == '重启进程':
+                if request.form['process'] == 'svc-roomserver':
+                    result = operations_server.reload(servername, process)
+                    return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
+                if request.form['process'] == 'svc-payserver':
+                    result = operations_server.reload(servername, process)
+                    return render_template('operations_ser.html', result=result, ser_status=operations_server.selectstatus())
+        except:
+            pass
     return render_template('operations_ser.html')
 
 
