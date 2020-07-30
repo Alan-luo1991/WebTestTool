@@ -72,7 +72,11 @@ def updatagold_mongo():
     jb_num = int(request.form['Gold_Number_Data'])
     myquery = {'_id': player_id}
     newvalue ={'$set': {'money': jb_num}}
-    data_function.con_mongo('playermoney').update_many(myquery, newvalue)
+    try:
+        data_function.con_mongo('playermoney').update_many(myquery, newvalue)
+        data_function.con_mongo252('playermoney').update_many(myquery, newvalue)
+    except:
+        pass
     return gameID
 
 

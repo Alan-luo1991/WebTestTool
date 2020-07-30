@@ -236,7 +236,7 @@ def selectstatus():
     plan_result = json.loads(res_plan.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
     program_result = json.loads(res_program.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
     outernet_result = json.loads(res_outernet.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][
-                      -5:]
+                      -6:]
     server_status = "测试环境当前版本号：" + test_result + "\n" + "策划环境当前版本号：" + plan_result + "\n" + "开发环境当前版本号：" + program_result + "\n" + "外网测试环境当前版本号：" + outernet_result
     return server_status
 
