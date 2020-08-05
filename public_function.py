@@ -16,7 +16,7 @@ import data_function
 import requests
 import pymysql
 
-game_dict = {117: 'XZmaj_extends.html', 119: 'XLmaj_extends.html'}
+game_dict = {120: 'XZmaj_extends.html', 119: 'XLmaj_extends.html'}
 
 
 def Ipstate(gametype):
