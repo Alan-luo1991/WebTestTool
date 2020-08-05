@@ -48,18 +48,16 @@ get_headers = {"Accept": "application/json, text/plain, */*",
                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.87 Safari/537.36"}
 processlist = ["svc-roomserver", "svc-playerserver", "svc-payserver", "svc-agentserver", "gateway-payapi",
                "gateway-authapi", "gateway-lobbyapi", "gateway-xlch", "gateway-fkddz", "gateway-game-xzdd",
-               "gateway-gameapi",
-               "gateway-gwapi"]
+               "gateway-gameapi", "gateway-gwapi", "gateway-xzmj"]
 
 gatewaylist = ["gateway-payapi", "gateway-authapi", "gateway-lobbyapi", "gateway-xlch", "gateway-fkddz",
-               "gateway-game-xzdd", "gateway-gameapi", "gateway-gwapi"]
+               "gateway-game-xzdd", "gateway-gameapi", "gateway-gwapi", "gateway-xzmj"]
 
 svclist = ["svc-roomserver", "svc-playerserver", "svc-payserver", "svc-agentserver"]
 
 gatewaydict = {"gateway-payapi": "game-payapi", "gateway-authapi": "game-authapi", "gateway-lobbyapi": "game-lobbyapi",
-               "gateway-xlch": "game-gameapi-xlch", "gateway-fkddz": "game-gameapi-fkddz",
-               "gateway-game-xzdd": "game-gameapi-xzdd",
-               "gateway-gameapi": "game-gameapi", "gateway-gwapi": "game-gwapi"}
+               "gateway-xlch": "game-gameapi-xlch", "gateway-fkddz": "game-gameapi-fkddz", "gateway-game-xzdd": "game-gameapi-xzdd",
+               "gateway-gameapi": "game-gameapi", "gateway-gwapi": "game-gwapi", "gateway-xzmj": "game-gameapi-xzmj"}
 
 
 def updata(servername, version):
