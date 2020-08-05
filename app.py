@@ -92,7 +92,7 @@ def operations():
 def XZmaj_extends():
     global player
     if request.method == 'GET':
-        return render_template('XZmaj_extends.html', fieldresult=data_function.gamesiteinfo(117), IPresult=public_function.Ipstate(117))
+        return render_template('XZmaj_extends.html', fieldresult=data_function.gamesiteinfo(120), IPresult=public_function.Ipstate(120))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             return maj_function.deploycard(120)
