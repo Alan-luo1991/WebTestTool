@@ -26,6 +26,7 @@ import maj_function
 import public_function
 import doudz_function
 import operations_server
+import droptest
 import json
 
 
@@ -54,6 +55,28 @@ def hello_world():
 def homepage():
 
     return render_template('homepage.html')
+
+
+@app.route("/drop_test.html", methods=['GET', 'POST'])
+def droptests():
+    if request.method == 'POST':
+        if request.form['Submit_Button'] == '确认掉落':
+            if request.form['getbox_data'] == '':
+                return render_template('drop_test.html', result='掉落次数不能为空')
+            elif request.form['getbox_data'].isdigit() is False:
+                return render_template('drop_test.html', result='请输入正确的数字!')
+            else:
+                num = int(request.form['getbox_data'])
+                return render_template('drop_test.html', result=droptest.getbox(num))
+        if request.form['Submit_Button'] == '确认开启':
+            if request.form['openbox_data'] == '':
+                return render_template('drop_test.html', result='掉落次数不能为空')
+            elif request.form['openbox_data'].isdigit() is False:
+                return render_template('drop_test.html', result='请输入正确的数字!')
+            else:
+                num = int(request.form['openbox_data'])
+                return render_template('drop_test.html', result=droptest.openbox(num))
+    return render_template('drop_test.html')
 
 
 @app.route("/operations_ser.html", methods=['GET', 'POST'])
