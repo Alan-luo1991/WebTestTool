@@ -206,11 +206,11 @@
             <p style="margin-left: 60px; margin-top: 20px; color: #90111A">目前固定为开启黄金宝箱,建议次数最大上限为10000次，超出接口可能会崩溃</p>
             <label style="margin-left: 230px; margin-top: 20px">宝箱掉落</label><br>
             <label style="margin-left: 60px; margin-top: 20px">掉落次数：</label>
-            <input id="getbox" type="text" name="getbox_data" value="" style="width: 200px">
+            <input id="getbox" type="text" name="getbox_data" value="{{ num }}" style="width: 200px">
             <input id="getbox" type="submit" name="Submit_Button" onclick="" value="确认掉落" style="width: 80px; height: 30px; margin-left: 105px;"><br>
             <label style="margin-left: 230px; margin-top: 20px">宝箱开启</label><br>
             <label style="margin-left: 60px; margin-top: 20px">开启次数：</label>
-            <input id="openbox" type="text" name="openbox_data" value="" style="width: 200px">
+            <input id="openbox" type="text" name="openbox_data" value="{{ num }}" style="width: 200px">
             <input id="openbox" type="submit" name="Submit_Button" onclick="" value="确认开启" style="width: 80px; height: 30px; margin-left: 105px;"><br>
             <textarea rows="37" cols="130" style="margin-left: 60px; margin-top: 15px; line-height: 2" wrap="hard">{{ result }}</textarea>
         </form>

@@ -67,7 +67,7 @@ def droptests():
                 return render_template('drop_test.html', result='请输入正确的数字!')
             else:
                 num = int(request.form['getbox_data'])
-                return render_template('drop_test.html', result=droptest.getbox(num))
+                return render_template('drop_test.html', result=droptest.getbox(num), num=num)
         if request.form['Submit_Button'] == '确认开启':
             if request.form['openbox_data'] == '':
                 return render_template('drop_test.html', result='掉落次数不能为空')
@@ -75,7 +75,7 @@ def droptests():
                 return render_template('drop_test.html', result='请输入正确的数字!')
             else:
                 num = int(request.form['openbox_data'])
-                return render_template('drop_test.html', result=droptest.openbox(num))
+                return render_template('drop_test.html', result=droptest.openbox(num), num=num)
     return render_template('drop_test.html')
 
 

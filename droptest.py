@@ -16,6 +16,7 @@ headers = {"Content-Type": "application/json", "Authorization": "7136829"}
 
 def getbox(num):
     data = {"id": 200101}
+    a = num
     sky = 0
     boxlist = []
     while num > 0:
@@ -25,7 +26,11 @@ def getbox(num):
         else:
             boxlist.append(json.loads(res.text)[0]["id"])
         num -= 1
-    result = "未掉落次数：{} ----铜宝箱数量:{}  银宝箱数量:{}  金宝箱数量:{}".format(sky, boxlist.count(100211), boxlist.count(100212), boxlist.count(100213))
+    sky1 = str(sky / a)[:4] + "%"
+    box1 = str(boxlist.count(100211) / (a - sky))[:4] + "%"
+    box2 = str(boxlist.count(100212) / (a - sky))[:4] + "%"
+    box3 = str(boxlist.count(100213) / (a - sky))[:4] + "%"
+    result = "未掉落次数：{} 未掉落概率：{}\n铜宝箱数量: {}  掉落概率：{}\n银宝箱数量: {}  掉落概率：{}\n金宝箱数量: {}  掉落概率：{}\n".format(sky, sky1, boxlist.count(100211), box1, boxlist.count(100212), box2, boxlist.count(100213), box3)
     return result
 
 
