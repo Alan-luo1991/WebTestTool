@@ -16,6 +16,9 @@ headers = {"Content-Type": "application/json", "Authorization": "7136829"}
 
 def getbox(num):
     data = {"id": 200101}
+    if num == 0:
+        result = "请输入正确的次数"
+        return result
     a = num
     sky = 0
     boxlist = []
@@ -26,10 +29,25 @@ def getbox(num):
         else:
             boxlist.append(json.loads(res.text)[0]["id"])
         num -= 1
-    sky1 = str(sky / a)[:4] + "%"
-    box1 = str(boxlist.count(100211) / (a - sky))[:4] + "%"
-    box2 = str(boxlist.count(100212) / (a - sky))[:4] + "%"
-    box3 = str(boxlist.count(100213) / (a - sky))[:4] + "%"
+    if (sky / a) * 100 == 0:
+        sky1 = str((sky / a) * 100)[:3] + "%"
+    else:
+        sky1 = str((sky / a) * 100)[:2] + "%"
+    if a - sky == 0:
+        box1, box2, box3 = "0.0%", "0.0%", "0.0%"
+    else:
+        if (boxlist.count(100211) / (a - sky)) * 100 < 10 or (boxlist.count(100211) / (a - sky)) * 100 == 100:
+            box1 = str((boxlist.count(100211) / (a - sky)) * 100)[:3] + "%"
+        else:
+            box1 = str((boxlist.count(100211) / (a - sky)) * 100)[:2] + "%"
+        if (boxlist.count(100212) / (a - sky)) * 100 < 10 or (boxlist.count(100212) / (a - sky)) * 100 == 100:
+            box2 = str((boxlist.count(100212) / (a - sky)) * 100)[:3] + "%"
+        else:
+            box2 = str((boxlist.count(100212) / (a - sky)) * 100)[:2] + "%"
+        if (boxlist.count(100213) / (a - sky)) * 100 < 10 or (boxlist.count(100213) / (a - sky)) * 100 == 100:
+            box3 = str((boxlist.count(100213) / (a - sky)) * 100)[:3] + "%"
+        else:
+            box3 = str((boxlist.count(100213) / (a - sky)) * 100)[:2] + "%"
     result = "未掉落次数：{} 未掉落概率：{}\n铜宝箱数量: {}  掉落概率：{}\n银宝箱数量: {}  掉落概率：{}\n金宝箱数量: {}  掉落概率：{}\n".format(sky, sky1, boxlist.count(100211), box1, boxlist.count(100212), box2, boxlist.count(100213), box3)
     return result
 
