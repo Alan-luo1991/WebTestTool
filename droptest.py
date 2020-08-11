@@ -29,7 +29,7 @@ def getbox(num):
         else:
             boxlist.append(json.loads(res.text)[0]["id"])
         num -= 1
-    if (sky / a) * 100 == 0:
+    if (sky / a) * 100 == 0 or (sky / a) * 100 == 100:
         sky1 = str((sky / a) * 100)[:3] + "%"
     else:
         sky1 = str((sky / a) * 100)[:2] + "%"
