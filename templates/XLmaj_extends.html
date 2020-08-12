@@ -277,6 +277,14 @@
                                     <input type="radio" name="robot" value="open"><span>打开</span>
                                 </label>
                                 <input id="reload" type="submit" name="Submit_Button" value="确定修改" style="width: 80px; height: 30px; margin-left: 175px;"><br>
+                                <label style="margin-left: 60px; margin-top: 20px">IP限制：</label>
+                                <label class="lyear-radio radio-inline radio-primary">
+                                    <input type="radio" name="ip" value="close" checked="checked"><span>关闭</span>
+                                </label>
+                                <label class="lyear-radio radio-inline radio-primary">
+                                    <input type="radio" name="ip" value="open"><span>打开</span>
+                                </label>
+                                <input id="reload" type="submit" name="Submit_Button" value="限制开关" style="width: 80px; height: 30px; margin-left: 175px;"><br>
                                 <label for="GoldNumberData" style="margin-left: 60px; margin-top: 20px">场次选择：</label>
                                 <label class="lyear-radio radio-inline radio-primary">
                                     <input type="radio" name="game_site" value="初级场" checked="checked"><span>初级场</span>
@@ -290,10 +298,10 @@
                                 <label class="lyear-radio radio-inline radio-primary">
                                     <input type="radio" name="game_site" value="大师场"><span>大师场</span>
                                 </label><br>
-                                <label style="margin-left: 60px; margin-top: 20px">机器人状态：{{ fieldresult }}</label>
+                                <label style="margin-left: 60px; margin-top: 20px">机器人状态：{{ fieldresult }}</label><br>
+                                <label style="margin-left: 60px; margin-top: 20px">Ip限制状态：{{ IPresult }}</label>
                             </form>
                             <label for="Result" style="margin-left: 60px; margin-top: 40px; color: #90111A; font-size: 25px" >返回结果：</label><strong style="color: #90111A; font-size: 25px">{{ Tips }}</strong><br>
-                            <label for="Result" style="margin-left: 60px; margin-top: 40px; color: #90111A; font-size: 25px" >IP限制状态：</label><strong style="color: #90111A; font-size: 25px">{{ IPresult }}</strong>
                         </div>
                     </div>
                 </div>

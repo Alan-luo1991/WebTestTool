@@ -55,18 +55,32 @@ def con_mongo252(DBset):
     return mycol
 
 
-def gamesiteinfo(gameType):
+def gamesiteinfo(gametype):
     """
     查询游戏场次中机器人开关状态
     :param gameType: 游戏类型
     :return: 各场次机器人开关状态
     """
-    Primary = con_mongo('gamekind').find_one({'gameType': gameType, 'name': '初级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
-    Intermediate = con_mongo('gamekind').find_one({'gameType': gameType, 'name': '中级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
-    Senior = con_mongo('gamekind').find_one({'gameType': gameType, 'name': '高级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
-    Master = con_mongo('gamekind').find_one({'gameType': gameType, 'name': '大师场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
+    Primary = con_mongo('gamekind').find_one({'gameType': gametype, 'name': '初级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
+    Intermediate = con_mongo('gamekind').find_one({'gameType': gametype, 'name': '中级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
+    Senior = con_mongo('gamekind').find_one({'gameType': gametype, 'name': '高级场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
+    Master = con_mongo('gamekind').find_one({'gameType': gametype, 'name': '大师场'}, {'_id': 0, 'enableRobot': 1})['enableRobot']
     fieldresult = ['初级场：'+str(Primary), '中级场：'+str(Intermediate), '高级场：'+str(Senior), '大师场：'+str(Master)]
     return fieldresult
+
+
+def iplimitinfo(gametype):
+    """
+    查询游戏场次中IP限制开关状态
+    :param gameType: 游戏类型
+    :return: 各场次机器人开关状态
+    """
+    Primary = con_mongo('gamekind').find_one({'gameType': gametype, 'name': '初级场'}, {'_id': 0, 'matchIp': 1})['matchIp']
+    Intermediate = con_mongo('gamekind').find_one({'gameType': gametype, 'name': '中级场'}, {'_id': 0, 'matchIp': 1})['matchIp']
+    Senior = con_mongo('gamekind').find_one({'gameType': gametype, 'name': '高级场'}, {'_id': 0, 'matchIp': 1})['matchIp']
+    Master = con_mongo('gamekind').find_one({'gameType': gametype, 'name': '大师场'}, {'_id': 0, 'matchIp': 1})['matchIp']
+    ipresult = ['初级场：' + str(Primary), '中级场：' + str(Intermediate), '高级场：' + str(Senior), '大师场：' + str(Master)]
+    return ipresult
 
 
 def updatagold_mysql(gameID, jb_num):

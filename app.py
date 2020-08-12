@@ -60,6 +60,11 @@ def homepage():
 @app.route("/drop_test.html", methods=['GET', 'POST'])
 def droptests():
     if request.method == 'POST':
+        boxid = int(request.form['boxid'])
+        userid = request.form['userid']
+        if userid == "":
+            userid = '3397142363329372'
+        url = request.form['serverurl']
         if request.form['Submit_Button'] == '确认掉落':
             if request.form['getbox_data'] == '':
                 return render_template('drop_test.html', result='掉落次数不能为空')
@@ -67,7 +72,7 @@ def droptests():
                 return render_template('drop_test.html', result='请输入正确的数字!')
             else:
                 num = int(request.form['getbox_data'])
-                return render_template('drop_test.html', result=droptest.getbox(num), num=num)
+                return render_template('drop_test.html', result=droptest.getbox(num, userid, url), num=num)
         if request.form['Submit_Button'] == '确认开启':
             if request.form['openbox_data'] == '':
                 return render_template('drop_test.html', result='开启次数不能为空')
@@ -75,8 +80,9 @@ def droptests():
                 return render_template('drop_test.html', result='请输入正确的数字!')
             else:
                 num = int(request.form['openbox_data'])
-                boxid = int(request.form['boxid'])
-                return render_template('drop_test.html', result=droptest.openbox(boxid, num), num=num)
+                return render_template('drop_test.html', result=droptest.openbox(num, boxid, userid, url), num=num)
+        if request.form['Subimt_Button'] == '一键满背包':
+                return render_template('drop_test.html', result=droptest.usebox(100, userid, url))
     return render_template('drop_test.html')
 
 
@@ -116,7 +122,7 @@ def operations():
 def XZmaj_extends():
     global player
     if request.method == 'GET':
-        return render_template('XZmaj_extends.html', fieldresult=data_function.gamesiteinfo(120), IPresult=public_function.Ipstate(120))
+        return render_template('XZmaj_extends.html', fieldresult=data_function.gamesiteinfo(120), IPresult=data_function.iplimitinfo(120))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             return maj_function.deploycard(120)
@@ -136,6 +142,8 @@ def XZmaj_extends():
             return maj_function.lastcard(120, 'reset')
         if request.form['Submit_Button'] == '确定修改':
             return public_function.Robotswitch(120)
+        if request.form['Submit_Button'] == '限制开关':
+            return public_function.Ipswitch(120)
     return render_template('XZmaj_extends.html')
 
 
@@ -143,7 +151,7 @@ def XZmaj_extends():
 def XLmaj_extends():
     global player
     if request.method == 'GET':
-        return render_template('XLmaj_extends.html', fieldresult=data_function.gamesiteinfo(119), IPresult=public_function.Ipstate(119))
+        return render_template('XLmaj_extends.html', fieldresult=data_function.gamesiteinfo(119), IPresult=data_function.iplimitinfo(119))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             return maj_function.deploycard(119)
@@ -163,13 +171,15 @@ def XLmaj_extends():
             return maj_function.lastcard(119, 'reset')
         if request.form['Submit_Button'] == '确定修改':
             return public_function.Robotswitch(119)
+        if request.form['Submit_Button'] == '限制开关':
+            return public_function.Ipswitch(119)
     return render_template('XLmaj_extends.html')
 
 
 @app.route('/HLdoudz_extends.html', methods=['GET', 'POST'])
 def HLdoudz_extends():
     if request.method == 'GET':
-        return render_template('HLdoudz_extends.html', IPresult=public_function.Ipstate(100))
+        return render_template('HLdoudz_extends.html', IPresult=data_function.iplimitinfo(100))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             return doudz_function.deploycard(100)
@@ -201,7 +211,7 @@ def HLdoudz_extends():
 @app.route('/FKdoudz_extends.html', methods=['GET', 'POST'])
 def FKdoudz_extends():
     if request.method == 'GET':
-        return render_template('FKdoudz_extends.html', IPresult=public_function.Ipstate(118))
+        return render_template('FKdoudz_extends.html', IPresult=data_function.iplimitinfo(118))
     if request.method == 'POST':
         if request.form['Submit_Button'] == '确认发送':
             return doudz_function.deploycard(118)

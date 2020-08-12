@@ -62,6 +62,27 @@ def Robotswitch(gametype):
                                fieldresult=data_function.gamesiteinfo(gametype))
 
 
+def Ipswitch(gametype):
+    """
+    IP限制开关
+    :param ganmetype: 游戏类型
+    :return:
+    """
+    iplimit = request.form['ip']
+    game_site = str(request.form['game_site'])
+    myquery = {'gameType': gametype, 'name': game_site}
+    if iplimit == 'open':
+        newvalue = {'$set': {'matchIp': bool(2 > 1)}}
+        data_function.con_mongo('gamekind').update_many(myquery, newvalue)
+        return render_template(game_dict[gametype], Tips=game_site + '-->IP限制已打开，现在相同IP不能配牌到一起了',
+                               IPresult=data_function.iplimitinfo(gametype))
+    if iplimit == 'close':
+        newvalue = {'$set': {'matchIp': bool(1 > 2)}}
+        data_function.con_mongo('gamekind').update_many(myquery, newvalue)
+        return render_template(game_dict[gametype], Tips=game_site + '-->IP限制已关闭，现在相同IP可以配牌到一起了',
+                               IPresult=data_function.iplimitinfo(gametype))
+
+
 def updatagold_mongo():
     """
     更新mongoDB中用户金币
