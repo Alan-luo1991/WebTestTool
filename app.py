@@ -72,7 +72,7 @@ def droptests():
                 return render_template('drop_test.html', result='请输入正确的数字!')
             else:
                 num = int(request.form['getbox_data'])
-                return render_template('drop_test.html', result=droptest.getbox(num, userid, url), num=num)
+                return render_template('drop_test.html', result=droptest.getbox(num, userid, url), num=num, userid=userid)
         if request.form['Submit_Button'] == '确认开启':
             if request.form['openbox_data'] == '':
                 return render_template('drop_test.html', result='开启次数不能为空')
@@ -80,9 +80,10 @@ def droptests():
                 return render_template('drop_test.html', result='请输入正确的数字!')
             else:
                 num = int(request.form['openbox_data'])
-                return render_template('drop_test.html', result=droptest.openbox(num, boxid, userid, url), num=num)
-        if request.form['Subimt_Button'] == '一键满背包':
-                return render_template('drop_test.html', result=droptest.usebox(100, userid, url))
+                return render_template('drop_test.html', result=droptest.openbox(num, boxid, userid, url), num=num, userid=userid)
+        if request.form['Submit_Button'] == '一键满背包':
+            print(userid, url)
+            return render_template('drop_test.html', result=droptest.getgoldbox(userid, url), userid=userid)
     return render_template('drop_test.html')
 
 

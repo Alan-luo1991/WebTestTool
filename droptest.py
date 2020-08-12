@@ -21,6 +21,7 @@ def getheader(userid, url):
 
 
 def getbox(num, userid, url):
+    header = getheader(userid, url)
     data = {"id": 200101}
     if num == 0:
         result = "请输入正确的次数"
@@ -29,7 +30,7 @@ def getbox(num, userid, url):
     sky = 0
     boxlist = []
     while num > 0:
-        res = requests.post(url + "/plus/lootTest", json=data, headers=getheader(userid, url))
+        res = requests.post(url + "/plus/lootTest", json=data, headers=header)
         if len(res.text) == 5:
             sky += 1
         else:
@@ -59,10 +60,11 @@ def getbox(num, userid, url):
 
 
 def openbox(num, boxid, userid, url):
+    header = getheader(userid, url)
     data = {"id": boxid}
     itemlist = []
     while num > 0:
-        res = requests.post(url + "/plus/lootTest", json=data, headers=getheader(userid, url))
+        res = requests.post(url + "/plus/lootTest", json=data, headers=header)
         res = json.loads(res.text)
         for i in res:
             itemlist.append(i)
@@ -107,10 +109,13 @@ def openbox(num, boxid, userid, url):
 
 
 def usebox(num, userid, url):
-    playerinfo = requests.post(url + '/plus/playerInfo', headers=getheader(userid, url))
+    header = getheader(userid, url)
+    playerinfo = requests.post(url + '/plus/playerInfo', headers=header)
+    if len(playerinfo.text) == 28:
+        return "点击太频繁，服务器报错了！"
     if json.loads(playerinfo.text)['diamonds'] < 10000:
         res_buyM = requests.post(url + '/mall/buy', json={"storeType": 2, "goodsId": 103897089},
-                                 headers=getheader(userid, url))  # 买钻石5000个
+                                 headers=header)  # 买钻石5000个
     items = json.loads(playerinfo.text)['bg']['Items']
     boxindex = []
     for i, k in enumerate(items):
@@ -118,45 +123,45 @@ def usebox(num, userid, url):
             continue
         if k['MetaId'] == 100203:
             boxindex.append(i)
+    print(boxindex)
     if len(boxindex) == 0:
-        a = 10
+        a = 100
         while a > 0:
             res_buybox = requests.post(url + '/mall/buy', json={"storeType": 3, "goodsId": 103902464},
-                                   headers=getheader(userid, url))  # 买金宝箱10个
+                                   headers=header)  # 买金宝箱10个
             a -= 1
+        return "本次没有在背包中找到金宝箱，现已为你添加1000个金宝箱，请重新点击一键满背包"
     itemlist = []
     while num > 0:
-        res_set = requests.post(url + '/plus/StOpBox', json={"B1Idx": boxindex[0], "B2Idx": 1}, headers=getheader(userid, url))  # 放入宝箱
-        res_open = requests.post(url + '/plus/UseBoxByDMD', json={"idx": 1, "diamond": 24}, headers=getheader(userid, url))
-        res_open = json.loads(res_open.text)
-        for i in res_open:
-            itemlist.append(i)
-        num -= 1
-    result = "道具出现次数详情：\n" + "金币-500：{}次 金币-1000：{}次 金币-2000：{}次\n".format(itemlist.count({'id': 800002, 'n': 500}),
-                                                                            itemlist.count({'id': 800002, 'n': 1000}),
-                                                                            itemlist.count({'id': 800002, 'n': 2000})) \
-              + "经验材料C-1个：{}次 经验材料C-3个：{}次 经验材料B-1个：{}次 经验材料B-2个：{}次 ".format(itemlist.count({'id': 100707, 'n': 1}),
-                                                                              itemlist.count({'id': 100714, 'n': 3}),
-                                                                              itemlist.count({'id': 100702, 'n': 1}),
-                                                                              itemlist.count({'id': 100710, 'n': 2})) \
-              + "经验材料A-1个：{}次 经验材料A-2个：{}次\n".format(itemlist.count({'id': 100711, 'n': 5}),
-                                                     itemlist.count({'id': 100717, 'n': 7})) \
-              + "记牌器1次-2个：{}次 记牌器1次-4个：{}次 记牌器1次-7个：{}次\n".format(itemlist.count({'id': 100301, 'n': 2}),
-                                                                  itemlist.count({'id': 100301, 'n': 4}),
-                                                                  itemlist.count({'id': 100301, 'n': 7})) \
-              + "钥匙-1个：{}次 超级加倍卡-2个：{}次 超级加倍卡-4个：{}次\n".format(itemlist.count({'id': 100101, 'n': 1}),
-                                                               itemlist.count({'id': 100401, 'n': 2}),
-                                                               itemlist.count({'id': 100401, 'n': 4})) \
-              + "魂玉-1个：{}次 魂玉-2个：{}次 魂玉-3个：{}次\n".format(itemlist.count({'id': 800003, 'n': 1}),
-                                                         itemlist.count({'id': 800003, 'n': 2}),
-                                                         itemlist.count({'id': 800003, 'n': 3})) \
-              + "向墨：{}次 舒怡：{}次 康莉：{}次 玉祥：{}次 若琳：{}次 元一：{}次\n".format(itemlist.count({'id': 200001, 'n': 1}),
-                                                                     itemlist.count({'id': 200002, 'n': 1}),
-                                                                     itemlist.count({'id': 200003, 'n': 1}),
-                                                                     itemlist.count({'id': 200004, 'n': 1}),
-                                                                     itemlist.count({'id': 200005, 'n': 1}),
-                                                                     itemlist.count({'id': 200006, 'n': 1}))
-    return
+        try:
+            res_set = requests.post(url + '/plus/StOpBox', json={"B1Idx": boxindex[0], "B2Idx": 1}, headers=header)  # 放入宝箱
+            res_open = requests.post(url + '/plus/UseBoxByDMD', json={"idx": 1, "diamond": 24}, headers=header)
+            res_open = json.loads(res_open.text)
+            for i in res_open:
+                itemlist.append(i)
+            num -= 1
+        except:
+            return "本次已打开你背包内所有金宝箱，请查看背包"
+    return "本次为你打开了1000个金宝箱，请刷新客户端，查看背包"
+
+
+def getgoldbox(userid, url):
+    header = getheader(userid, url)
+    playerinfo = requests.post(url + '/plus/playerInfo', headers=header)
+    a = 100
+    if len(playerinfo.text) == 28:
+        return "点击太频繁，服务器报错了！"
+    if json.loads(playerinfo.text)['diamonds'] < 10000:
+        while a > 0:
+            res_buyM = requests.post(url + '/mall/buy', json={"storeType": 2, "goodsId": 103897089},
+                                 headers=header)  # 买钻石5000个
+            a -= 1
+    b = 999
+    while b > 1:
+        res_buybox = requests.post(url + '/mall/buy', json={"storeType": 3, "goodsId": 103902464},
+                                   headers=header)  # 买金宝箱10个
+        b -= 1
+    return "已经为你购买999个金宝箱，请查看背包"
 
 
 if __name__ == "__main__":
