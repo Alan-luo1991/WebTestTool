@@ -220,17 +220,17 @@ def selectstatus():
     test_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/wanda-test-use/statefulsets?"
     plan_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/wanda-ce-hua/statefulsets?"
     program_url = "http://10.0.0.200:32567/k8s-api/apis/apps/v1/namespaces/wanda-games/statefulsets?"
-    outernet_url = "http://kuboard.xiaoxigua.top/k8s-api/apis/apps/v1/namespaces/games/statefulsets?"
+    # outernet_url = "http://kuboard.xiaoxigua.top/k8s-api/apis/apps/v1/namespaces/games/statefulsets?"
     res_test = requests.get(test_url, headers=lan_headers)
     res_plan = requests.get(plan_url, headers=lan_headers)
     res_program = requests.get(program_url, headers=lan_headers)
-    res_outernet = requests.get(outernet_url, headers=outernet_headers)
+    # res_outernet = requests.get(outernet_url, headers=outernet_headers)
     test_result = json.loads(res_test.text)["items"][0]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
     plan_result = json.loads(res_plan.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
     program_result = json.loads(res_program.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][-8:]
-    outernet_result = json.loads(res_outernet.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][
-                      -6:]
-    server_status = "测试环境当前版本号：" + test_result + "\n" + "策划环境当前版本号：" + plan_result + "\n" + "开发环境当前版本号：" + program_result + "\n" + "外网测试环境当前版本号：" + outernet_result
+    # outernet_result = json.loads(res_outernet.text)["items"][1]["spec"]["template"]["spec"]["containers"][0]["image"][
+    #                   -6:]
+    server_status = "测试环境当前版本号：" + test_result + "\n" + "策划环境当前版本号：" + plan_result + "\n" + "开发环境当前版本号：" + program_result + "\n" + "外网测试环境当前版本号："
     return server_status
 
 
