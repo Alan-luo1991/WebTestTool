@@ -21,9 +21,6 @@ lan_headers = {"Accept": "application/json, text/plain, */*",
                "Connection": "keep-alive",
                "Content-Type": "application/json;charset=UTF-8",
                "Cookie": "_ga=GA1.1.1618796466.1590981349; _gid=GA1.1.1039088035.1594018366; _gat=1",
-               # "Host": "10.0.0.200:32567",
-               # "Origin": "http://10.0.0.200:32567",
-               # "Pragma": "no-cache",
                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.87 Safari/537.36"}
 
 outernet_headers = {"Accept": "application/json, text/plain, */*",
@@ -43,20 +40,18 @@ get_headers = {"Accept": "application/json, text/plain, */*",
                "Connection": "keep-alive",
                "Content-Type": "application/json;charset=UTF-8",
                "Cookie": "_ga=GA1.1.1618796466.1590981349; _gid=GA1.1.1039088035.1594018366; _gat=1",
-               # "Host": "10.0.0.200:32567",
-               # "Pragma": "no-cache",
                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.87 Safari/537.36"}
 processlist = ["svc-roomserver", "svc-playerserver", "svc-payserver", "svc-agentserver", "gateway-payapi",
-               "gateway-authapi", "gateway-lobbyapi", "gateway-xlch", "gateway-fkddz", "gateway-game-xzdd",
+               "gateway-authapi", "gateway-lobbyapi", "gateway-xlch", "gateway-fkddz",
                "gateway-gameapi", "gateway-gwapi", "gateway-xzmj"]
 
 gatewaylist = ["gateway-payapi", "gateway-authapi", "gateway-lobbyapi", "gateway-xlch", "gateway-fkddz",
-               "gateway-game-xzdd", "gateway-gameapi", "gateway-gwapi", "gateway-xzmj"]
+               "gateway-gameapi", "gateway-gwapi", "gateway-xzmj"]
 
 svclist = ["svc-roomserver", "svc-playerserver", "svc-payserver", "svc-agentserver"]
 
 gatewaydict = {"gateway-payapi": "game-payapi", "gateway-authapi": "game-authapi", "gateway-lobbyapi": "game-lobbyapi",
-               "gateway-xlch": "game-gameapi-xlch", "gateway-fkddz": "game-gameapi-fkddz", "gateway-game-xzdd": "game-gameapi-xzdd",
+               "gateway-xlch": "game-gameapi-xlch", "gateway-fkddz": "game-gameapi-fkddz",
                "gateway-gameapi": "game-gameapi", "gateway-gwapi": "game-gwapi", "gateway-xzmj": "game-gameapi-xzmj"}
 
 
