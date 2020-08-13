@@ -148,20 +148,20 @@ def usebox(num, userid, url):
 def getgoldbox(userid, url):
     header = getheader(userid, url)
     playerinfo = requests.post(url + '/plus/playerInfo', headers=header)
-    a = 100
+    a = 20
     if len(playerinfo.text) == 28:
         return "点击太频繁，服务器报错了！"
-    if json.loads(playerinfo.text)['diamonds'] < 10000:
+    if json.loads(playerinfo.text)['diamonds'] < 100000:
         while a > 0:
             res_buyM = requests.post(url + '/mall/buy', json={"storeType": 2, "goodsId": 103897089},
                                  headers=header)  # 买钻石5000个
             a -= 1
-    b = 999
+    b = 99
     while b > 1:
-        res_buybox = requests.post(url + '/mall/buy', json={"storeType": 3, "goodsId": 103902464},
-                                   headers=header)  # 买金宝箱10个
+        res_buybox = requests.post(url + '/mall/buy', json={"storeType": 3, "goodsId": 103897472},
+                                   headers=header)
         b -= 1
-    return "已经为你购买999个金宝箱，请查看背包"
+    return "已经为你购买999个猫粮，请查看背包"
 
 
 if __name__ == "__main__":
